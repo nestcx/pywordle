@@ -1,4 +1,4 @@
-from .. .. pywordle.pywordle import Wordle
+from pywordle import Wordle
 from keyboard import generate_coloured_keyboard
 from colouring import *
 import os
