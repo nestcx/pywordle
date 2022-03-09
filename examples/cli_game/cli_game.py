@@ -1,7 +1,7 @@
-from pywordle.pywordle import Wordle
-from keyboard import generate_coloured_keyboard
-from colouring import *
 import os
+from pywordle.pywordle import Wordle
+from utils.cli_keyboard import generate_coloured_keyboard
+from utils.cli_colour_string import *
 
 
 def clear_terminal():

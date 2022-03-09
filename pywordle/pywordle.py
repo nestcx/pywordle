@@ -1,12 +1,12 @@
 import random
 from collections import Counter
-from pywordle.elimination import eliminate_words
+from helpers.elimination import eliminate_words
 
 class Wordle():
 
     wordlist = ()
 
-    def __init__(self, word = None, turn_limit = 6, wordlist='wordlist.txt'):
+    def __init__(self, word = None, turn_limit = 6, wordlist='data/wordlist.txt'):
 
         self.wordlist = wordlist
         Wordle.wordlist = self.__read_wordlist()
