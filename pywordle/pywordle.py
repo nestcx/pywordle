@@ -24,6 +24,7 @@ class Wordle():
         self.indirect_matches = {}
         self.blacklist = []
         self.letter_frequency = {}
+        self.definitive_frequency = {}
 
 
     # getters
@@ -33,7 +34,8 @@ class Wordle():
         data = {}
         data["direct_matches"] = self.direct_matches
         data["indirect_matches"] = self.indirect_matches
-        data["letter_frequency"] = self.letter_frequency
+        data["potential_lf"] = self.letter_frequency
+        data["definitive_lf"] = self.definitive_frequency
         data["blacklist"] = self.blacklist
 
         return eliminate_words(data, Wordle.wordlist)
@@ -62,6 +64,7 @@ class Wordle():
         out += f'Indirect Matches: {self.indirect_matches} \n'
         out += f'Blacklist: {self.blacklist} \n'
         out += f'Letter Frequency: {self.letter_frequency} \n'
+        out += f'DL Frequency: {self.definitive_frequency} \n'
         out += f'Remaining Words: {len(self.get_remaining_words)}/{len(Wordle.wordlist)} \n'
         return out
 
@@ -170,10 +173,22 @@ class Wordle():
         # blacklist
         self.__record_blacklist(guess, coloured_letters)
 
-        # letter frequency
-        current_letter_frequency = dict(Counter(coloured_letters))
-        self.__record_letter_frequency(self.letter_frequency, current_letter_frequency)
 
+        # letter frequencies
+        current_letter_frequency = dict(Counter(coloured_letters))
+
+        # definitive letter frequency
+        for letter in current_letter_frequency:
+            if current_letter_frequency[letter] < guess.count(letter):
+                self.definitive_frequency[letter] = current_letter_frequency[letter]
+
+
+        # potential letter frequency
+        for letter in current_letter_frequency:
+            if letter not in self.definitive_frequency:
+                self.__record_letter_frequency(self.letter_frequency, current_letter_frequency)
+
+       
         return colour_sequence
 
 
@@ -192,8 +207,8 @@ class Wordle():
 
         guess = guess.casefold().strip()
 
-        if self.__validate_guess(guess) == False:
-            return False
+        #if self.__validate_guess(guess) == False:
+        #    return False
         
         colour_sequence = self.__process_guess(guess)
 

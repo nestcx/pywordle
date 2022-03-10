@@ -35,15 +35,19 @@ def __test_blacklist(blacklist, word):
     return True
 
 
-def __test_letter_frequency(letter_frequency, word):
+def __test_letter_frequency(plf, dlf, word):
 
     word_dict =  dict(Counter(word))
 
-    for letter in letter_frequency:
-        if letter not in word:
-            return False
+    #for letter in letter_frequency:
+    #    if letter not in word:
+    #        return False
 
-        elif word_dict[letter] < letter_frequency[letter]:
+    for letter in dlf:
+        if word_dict[letter] != dlf[letter]:
+            return False
+    for letter in plf:
+        if word_dict[letter] < plf[letter]:
                 return False
 
     return True
@@ -61,11 +65,12 @@ def eliminate_words(data, lines):
         if __test_direct_matches(data["direct_matches"], word) == False:
             continue
 
-        if __test_letter_frequency(data["letter_frequency"], word) == False:
-            continue
-
         if __test_indirect_matches(data["indirect_matches"], word) == False:
             continue
+
+        if __test_letter_frequency(data["potential_lf"], data["definitive_lf"], word) == False:
+            continue
+
         
         remaining_answers.append(word)
     
