@@ -2,6 +2,7 @@ import os
 from pywordle.pywordle import Wordle
 from utils.cli_keyboard import generate_coloured_keyboard
 from utils.cli_colour_string import *
+import json
 
 
 def clear_terminal():
@@ -24,7 +25,7 @@ def guess_output(guess, colour_sequence):
     return output
 
 
-game = Wordle(turn_limit=10, word="spays")
+game = Wordle(word='edges', turn_limit=10, word_index=1)
 
 guesses = []
 colour_sequences = []
@@ -53,16 +54,20 @@ def display_game_screen(message=""):
     print(game.debug_info)
     print(get_turn_history())
     print(generate_coloured_keyboard(game.get_keyboard_data))
-    print(game.get_remaining_words)
+    rem = game.get_remaining_words
+    if len(rem) < 50:
+        print(game.get_remaining_words)
     print(message)
 
 
 display_game_screen()
 
+
 while game.state == "active":
 
     guess = input(f'{game.turn_no}: ')
     response = game.turn(guess)
+
 
     if response == False:
         display_game_screen("Invalid guess - Try again")
@@ -72,6 +77,7 @@ while game.state == "active":
         colour_sequences.append(response["colour_sequence"])
 
         display_game_screen()
+
 
 
 message = ""
