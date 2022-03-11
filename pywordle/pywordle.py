@@ -6,13 +6,15 @@ class Wordle():
 
     wordlist = ()
 
-    def __init__(self, word = None, turn_limit = 6, wordlist='data/wordlist.txt'):
+    def __init__(self, word = None, turn_limit = 6, wordlist='data/wordlist.txt', word_index = None):
 
         self.wordlist = wordlist
         Wordle.wordlist = self.__read_wordlist()
 
         if word != None:
             self.word = word
+        elif word_index != None:
+            self.word = Wordle.wordlist[word_index]
         else:
             self.word = self.__get_random_word()
 
@@ -22,9 +24,9 @@ class Wordle():
 
         self.direct_matches = {}
         self.indirect_matches = {}
-        self.blacklist = []
-        self.letter_frequency = {}
+        self.potential_frequency = {}
         self.definitive_frequency = {}
+        self.blacklist = []
 
 
     # getters
@@ -34,8 +36,8 @@ class Wordle():
         data = {}
         data["direct_matches"] = self.direct_matches
         data["indirect_matches"] = self.indirect_matches
-        data["potential_lf"] = self.letter_frequency
-        data["definitive_lf"] = self.definitive_frequency
+        data["potential_frequency"] = self.potential_frequency
+        data["definitive_frequency"] = self.definitive_frequency
         data["blacklist"] = self.blacklist
 
         return eliminate_words(data, Wordle.wordlist)
@@ -63,8 +65,8 @@ class Wordle():
         out += f'Direct Matches: {self.direct_matches} \n'
         out += f'Indirect Matches: {self.indirect_matches} \n'
         out += f'Blacklist: {self.blacklist} \n'
-        out += f'Letter Frequency: {self.letter_frequency} \n'
-        out += f'DL Frequency: {self.definitive_frequency} \n'
+        out += f'Potential Frequency: {self.potential_frequency} \n'
+        out += f'Definitive Frequency: {self.definitive_frequency} \n'
         out += f'Remaining Words: {len(self.get_remaining_words)}/{len(Wordle.wordlist)} \n'
         return out
 
@@ -90,7 +92,7 @@ class Wordle():
         if index not in dict[letter]:
             dict[letter].append(index)
 
-    def __record_letter_frequency(self, dict, letters):
+    def __record_potential_frequency(self, dict, letters):
         for x, i in letters.items():
             if (dict.get(x) == None or dict[x] < i):
                 dict[x] = i
@@ -181,14 +183,12 @@ class Wordle():
         for letter in current_letter_frequency:
             if current_letter_frequency[letter] < guess.count(letter):
                 self.definitive_frequency[letter] = current_letter_frequency[letter]
-
-
-        # potential letter frequency
-        for letter in current_letter_frequency:
-            if letter not in self.definitive_frequency:
-                self.__record_letter_frequency(self.letter_frequency, current_letter_frequency)
-
-       
+                self.potential_frequency.pop(letter, None)
+                break
+            else: 
+                self.__record_potential_frequency(self.potential_frequency, current_letter_frequency)
+        
+        
         return colour_sequence
 
 
@@ -201,14 +201,17 @@ class Wordle():
         return False
 
 
+
+
+
     # public functions
 
     def turn(self, guess):
 
         guess = guess.casefold().strip()
 
-        #if self.__validate_guess(guess) == False:
-        #    return False
+        if self.__validate_guess(guess) == False:
+            return False
         
         colour_sequence = self.__process_guess(guess)
 

@@ -39,10 +39,6 @@ def __test_letter_frequency(plf, dlf, word):
 
     word_dict =  dict(Counter(word))
 
-    #for letter in letter_frequency:
-    #    if letter not in word:
-    #        return False
-
     for letter in dlf:
         if word_dict[letter] != dlf[letter]:
             return False
@@ -68,7 +64,7 @@ def eliminate_words(data, lines):
         if __test_indirect_matches(data["indirect_matches"], word) == False:
             continue
 
-        if __test_letter_frequency(data["potential_lf"], data["definitive_lf"], word) == False:
+        if __test_letter_frequency(data["potential_frequency"], data["definitive_frequency"], word) == False:
             continue
 
         
