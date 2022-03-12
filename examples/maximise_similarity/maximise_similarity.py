@@ -47,7 +47,7 @@ def determine_best_guess(wordscores):
 
 
 
-game_count = 4266
+game_count = 50
 tracker = SolveTracker()
 
 with alive_bar(game_count, stats=False) as bar:
