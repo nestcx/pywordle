@@ -1,5 +1,5 @@
-from pywordle.pywordle import Wordle
-from utils.solvetracker import SolveTracker
+from pywordle.pywordle.pywordle import Wordle
+from pywordle.utils.solvetracker import SolveTracker
 from alive_progress import alive_bar
 import string
 

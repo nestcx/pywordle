@@ -1,2 +1,2 @@
-include data/*.txt
-include tests/elimination/*.json
+include pywordle/data/*.txt
+include pywordle/tests/elimination/ *.py *.json

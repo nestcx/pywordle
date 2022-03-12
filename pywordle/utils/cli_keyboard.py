@@ -1,4 +1,4 @@
-from utils.cli_colour_string import *
+from pywordle.utils.cli_colour_string import *
 
 rows = [['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p'],
 ['a', 's', 'd', 'f','g', 'h', 'j', 'k', 'l'],
