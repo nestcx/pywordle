@@ -1,8 +1,6 @@
 from pywordle.pywordle import Wordle
 import json
 
-# using wordlist.txt
-
 def test_edges():
     game = Wordle(word="edges")
     f = open('tests/elimination/edges.json', 'r')
@@ -92,3 +90,4 @@ def test_chief():
     for g in guesses:
         game.turn(g)
         assert game.get_remaining_words == guesses[g]
+        

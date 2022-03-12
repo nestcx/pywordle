@@ -1,2 +1,2 @@
-include *.txt
+include data/*.txt
 include tests/elimination/*.json
