@@ -2,6 +2,7 @@ import os
 from pywordle.pywordle.pywordle import Wordle
 from pywordle.utils.cli_keyboard import generate_coloured_keyboard
 from pywordle.utils.cli_colour_string import *
+from collections import Counter
 
 
 def clear_terminal():
@@ -24,7 +25,7 @@ def guess_output(guess, colour_sequence):
     return output
 
 
-game = Wordle(turn_limit=10, word="shave")
+game = Wordle(turn_limit=10, word="ratty")
 
 guesses = []
 colour_sequences = []
@@ -59,14 +60,64 @@ def display_game_screen(message=""):
     print(message)
 
 
+## CLEANUP WORD 
+def get_rm_freq(remaining_words):
+    return Counter(''.join(remaining_words))
+
+
+def get_dm_freq(direct_matches):
+    dm_freq = {}
+    for m in direct_matches:
+        dm_freq[m] = len(direct_matches[m])
+    return dm_freq
+
+def elim_m(remaining_words, dm_freq, rm_freq):
+    letters = set(''.join(remaining_words))
+    rem = []
+    for l in letters:
+        if l not in dm_freq:
+            rem.append(l)
+        else:
+            if rm_freq[l] != dm_freq[l] * len(remaining_words):
+                rem.append(l)
+    
+    return rem
+
+def find_intersections(wordlist, letters):
+    d = {0: [], 1: [], 2: [], 3: [], 4: [], 5: []}
+    for w in wordlist:
+        x = len(letters.intersection(w))
+        d[x].append(w)
+    return d
+
+
+def get_cleanup_word(all_words, remaining_words, direct_matches):
+    rm_freq = get_rm_freq(remaining_words)
+    dm_freq = get_dm_freq(direct_matches)
+    rem = elim_m(remaining_words, dm_freq, rm_freq)
+    ints = find_intersections(all_words, set(rem))
+
+    word = ''
+    for i in range(5, 0, -1):
+        if ints[i] != []:
+            word = ints[i][0]
+            break
+    
+    return word
+
+
+
 display_game_screen()
 
 
 while game.state == "active":
 
     guess = input(f'{game.turn_no}: ')
-    response = game.turn(guess)
+    if guess == 'cleanup':
+        print(f'cleanup:  {get_cleanup_word(game.valid_guess_list + game.valid_answer_list, game.get_remaining_answers, game.return_all_data["direct_matches"])}')
+        continue
 
+    response = game.turn(guess)
 
     if response == False:
         display_game_screen("Invalid guess - Try again")

@@ -1,4 +1,5 @@
 from new_ms_functions import find_intersections
+import random
 
 wordlist = [
 'shawl', 'fluff', 'drill', 'clean', 'awful', 
@@ -38,3 +39,21 @@ def test_length_sort():
     letters = set(['e','r', 'q', 'u', 'd', 'l'])
     d = find_intersections(wordlist, letters)
     print(d)
+
+def test_get_best_word():
+    word = ''
+    d = {0: ['hatch', 'stock', 'tasty', 'smith'], 2: ['fluff', 'clean', 'awful'], 3: ['drill'], 4: ['ulcer', 'goals'], 5: []}
+    for i in range(5, 0, -1):
+        if d[i] != []:
+            word = d[i][0]
+            break
+    
+    assert word == 'ulcer'
+
+def test_get_green_count():
+    c = 0
+    direct_matches = {'a': [1], 't': [2, 3], 'y': [4]}
+    for d in direct_matches:
+        c += len(direct_matches[d])
+
+    assert c == 4
