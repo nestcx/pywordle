@@ -1,3 +1,5 @@
+from new_ms_functions import find_intersections
+
 wordlist = [
 'shawl', 'fluff', 'drill', 'clean', 'awful', 
 'dowry', 'hatch', 'endow', 'stock', 'spelt', 
@@ -27,6 +29,7 @@ def find_intersections(wordlist, letters):
 def test_length_sort():
     letters = set(['d', 'k', 'm', 'p', 'v'])
 
+    d = find_intersections(wordlist, letters)
 
     assert sorted(d[2]) == sorted(['spade', 'tempo', 'mumps'])
     assert sorted(d[3]) == sorted(['moped'])
