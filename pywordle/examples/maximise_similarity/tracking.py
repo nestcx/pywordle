@@ -2,7 +2,6 @@ from pywordle.pywordle.pywordle import Wordle
 from pywordle.utils.solvetracker import SolveTracker
 from alive_progress import alive_bar
 import string
-import random
 
 
 def get_frequencies(words):
@@ -52,20 +51,29 @@ def determine_best_guess(wordscores, turn):
 game_count = 2315
 tracker = SolveTracker()
 
-with alive_bar(game_count, stats=False) as bar:
-    for i in range(0, game_count):
+with alive_bar(game_count, stats=False, disable=True) as bar:
+    for i in range(0, 1):
 
-        game = Wordle(word_index=i)
+        game = Wordle(word="shave", turn_limit=6)
+
+        print(game.turn_no)
         game.turn('salet')
+        input()
 
         while game.state == "active":
-
+            print(game.turn_no)
             freq = get_frequencies(game.get_remaining_answers)
             max_freq = calculate_max_frequency(freq)
             scores = calculate_word_scores(max_freq, freq, game.get_remaining_answers)
             guess = determine_best_guess(scores, game.turn_no)
-            guess = random.choice(game.get_remaining_answers)
             turn = game.turn(guess)
+            print(guess)
+            if game.turn_no > 4:
+                print(game.get_remaining_answers)
+            
+            input()
+
+
             #print(f'{guess} - {turn["colour_sequence"]} - {scores[guess]}')
 
             if game.state == "loss":

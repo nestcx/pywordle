@@ -1,4 +1,4 @@
-from pywordle.pywordle import Wordle
+from pywordle.pywordle.pywordle import Wordle
 import json
 
 def test_edges():

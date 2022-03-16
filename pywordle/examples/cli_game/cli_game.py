@@ -24,7 +24,7 @@ def guess_output(guess, colour_sequence):
     return output
 
 
-game = Wordle(turn_limit=10, word_index=1)
+game = Wordle(turn_limit=10, word="shave")
 
 guesses = []
 colour_sequences = []
@@ -53,9 +53,9 @@ def display_game_screen(message=""):
     print(game.debug_info)
     print(get_turn_history())
     print(generate_coloured_keyboard(game.get_keyboard_data))
-    rem = game.get_remaining_words
+    rem = game.get_remaining_answers
     if len(rem) < 50:
-        print(game.get_remaining_words)
+        print(rem)
     print(message)
 
 

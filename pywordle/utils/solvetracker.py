@@ -17,5 +17,5 @@ class SolveTracker():
     def get_stats(self):
         data = {}
         data["win_rate"] = f'{self.wins} / {(self.wins + self.losses)}'
-        data["avg_turns"] = sum(self.turn_no_history) / len(self.turn_no_history)
+        data["avg_turns"] = (sum(self.turn_no_history) / len(self.turn_no_history)) - 1
         return data

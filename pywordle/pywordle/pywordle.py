@@ -1,21 +1,22 @@
 import random
 from collections import Counter
 from pywordle.helpers.elimination import eliminate_words
-from pywordle.pywordle import DEFAULT_WORDLIST
+from pywordle.pywordle import DEFAULT_ANSWER_LIST, DEFAULT_GUESS_LIST
 
 class Wordle():
 
-    wordlist = ()
+    valid_guess_list = ()
+    valid_answer_list = ()
 
-    def __init__(self, word = None, turn_limit = 6, wordlist=DEFAULT_WORDLIST, word_index = None):
+    def __init__(self, word = None, turn_limit = 6, valid_guess_list=DEFAULT_GUESS_LIST, valid_answer_list=DEFAULT_ANSWER_LIST, word_index = None):
 
-        self.wordlist = wordlist
-        Wordle.wordlist = self.__read_wordlist()
+        Wordle.valid_guess_list = self.__read_wordlist(valid_guess_list)
+        Wordle.valid_answer_list = self.__read_wordlist(valid_answer_list)
 
         if word != None:
             self.word = word
         elif word_index != None:
-            self.word = Wordle.wordlist[word_index]
+            self.word = Wordle.valid_answer_list[word_index]
         else:
             self.word = self.__get_random_word()
 
@@ -33,7 +34,7 @@ class Wordle():
     # getters
 
     @property
-    def get_remaining_words(self):
+    def get_remaining_answers(self):
         data = {}
         data["direct_matches"] = self.direct_matches
         data["indirect_matches"] = self.indirect_matches
@@ -41,7 +42,7 @@ class Wordle():
         data["definitive_frequency"] = self.definitive_frequency
         data["blacklist"] = self.blacklist
 
-        return eliminate_words(data, Wordle.wordlist)
+        return eliminate_words(data, Wordle.valid_answer_list)
 
     @property
     def get_keyboard_data(self):
@@ -68,21 +69,21 @@ class Wordle():
         out += f'Blacklist: {self.blacklist} \n'
         out += f'Potential Frequency: {self.potential_frequency} \n'
         out += f'Definitive Frequency: {self.definitive_frequency} \n'
-        out += f'Remaining Words: {len(self.get_remaining_words)}/{len(Wordle.wordlist)} \n'
+        out += f'Remaining Answers: {len(self.get_remaining_answers)}/{len(Wordle.valid_answer_list)} \n'
         return out
 
 
     # private functions
 
-    def __read_wordlist(self):
-        f = open(self.wordlist, 'r')
+    def __read_wordlist(self, wordlist):
+        f = open(wordlist, 'r')
         wordlist = f.read().splitlines()
         f.close()
         return wordlist
         
 
     def __get_random_word(self):
-        return(random.choice(Wordle.wordlist))
+        return(random.choice(Wordle.valid_answer_list))
 
     
     # record direct and indirect matches dictionary
@@ -196,7 +197,7 @@ class Wordle():
     def __validate_guess(self, guess):
         if len(guess) != 5:
             return False
-        if guess in Wordle.wordlist:
+        if guess in Wordle.valid_guess_list or guess in Wordle.valid_answer_list:
             return True
         
         return False
