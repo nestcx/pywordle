@@ -25,7 +25,7 @@ def guess_output(guess, colour_sequence):
     return output
 
 
-game = Wordle(turn_limit=10, word="ratty")
+game = Wordle(turn_limit=10, word="saute")
 
 guesses = []
 colour_sequences = []
