@@ -8,17 +8,19 @@ class Wordle():
     valid_guess_list = ()
     valid_answer_list = ()
 
-    def __init__(self, word = None, turn_limit = 6, valid_guess_list=DEFAULT_GUESS_LIST, valid_answer_list=DEFAULT_ANSWER_LIST, word_index = None):
+    def __init__(self, gametype = 'random', word = None, word_index = None, turn_limit = 6, valid_guess_list=DEFAULT_GUESS_LIST, valid_answer_list=DEFAULT_ANSWER_LIST):
 
         Wordle.valid_guess_list = self.__read_wordlist(valid_guess_list)
         Wordle.valid_answer_list = self.__read_wordlist(valid_answer_list)
 
-        if word != None:
-            self.word = word
-        elif word_index != None:
-            self.word = Wordle.valid_answer_list[word_index]
-        else:
+        if gametype == 'random':
             self.word = self.__get_random_word()
+        elif gametype == 'unknown':
+            self.word = None
+        elif gametype == 'select':
+            self.word = word
+        elif gametype == 'index':
+            self.word = Wordle.valid_answer_list[word_index]
 
         self.state = "active"
         self.turn_no = 1
