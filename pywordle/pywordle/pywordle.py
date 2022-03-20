@@ -204,27 +204,36 @@ class Wordle():
         
         return False
 
+    def __validate_colour_sequence(self, colour_sequence):
+        return True
+
 
 
 
 
     # public functions
 
-    def turn(self, guess):
+    def turn(self, guess, colour_sequence=None):
 
         guess = guess.casefold().strip()
 
         if self.__validate_guess(guess) == False:
             return False
-        
-        colour_sequence = self.__process_guess(guess)
+
+        if colour_sequence != None:
+            if self.__validate_colour_sequence(colour_sequence) == False:
+                return False
+
+            self.__process_guess(guess, colour_sequence)
+        else:
+            result = self.__process_guess(guess)
 
         self.turn_no += 1
 
         if self.state == "win":
-            return {"guess": guess, "colour_sequence": colour_sequence}
+            return {"guess": guess, "result": result}
 
         if self.turn_no > self.turn_limit:
             self.state = "loss"
 
-        return {"guess": guess, "colour_sequence": colour_sequence}
+        return {"guess": guess, "result": result}
