@@ -25,7 +25,7 @@ def guess_output(guess, colour_sequence):
     return output
 
 
-game = Wordle(turn_limit=10, word="saute")
+game = Wordle(turn_limit=10, gametype="select", word="marks")
 
 guesses = []
 colour_sequences = []
@@ -51,7 +51,7 @@ def get_turn_history():
 
 def display_game_screen(message=""):
     clear_terminal()
-    print(game.debug_info)
+    print(game.gamestate)
     print(get_turn_history())
     print(generate_coloured_keyboard(game.get_keyboard_data))
     rem = game.get_remaining_answers
@@ -124,7 +124,7 @@ while game.state == "active":
         continue
     else:
         guesses.append(response["guess"])
-        colour_sequences.append(response["colour_sequence"])
+        colour_sequences.append(response["result"])
 
         display_game_screen()
 

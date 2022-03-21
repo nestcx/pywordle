@@ -1,5 +1,6 @@
 import random
 from collections import Counter
+from tkinter import N
 from pywordle.helpers.elimination import eliminate_words
 from pywordle.pywordle import DEFAULT_ANSWER_LIST, DEFAULT_GUESS_LIST
 
@@ -8,29 +9,44 @@ class Wordle():
     valid_guess_list = ()
     valid_answer_list = ()
 
-    def __init__(self, gametype = 'random', word = None, word_index = None, turn_limit = 6, valid_guess_list=DEFAULT_GUESS_LIST, valid_answer_list=DEFAULT_ANSWER_LIST):
+    def __init__(self, gamestate=None, gametype = 'random', word = None, word_index = None, turn_limit = 6, valid_guess_list=DEFAULT_GUESS_LIST, valid_answer_list=DEFAULT_ANSWER_LIST):
 
         Wordle.valid_guess_list = self.__read_wordlist(valid_guess_list)
         Wordle.valid_answer_list = self.__read_wordlist(valid_answer_list)
-
-        if gametype == 'random':
-            self.word = self.__get_random_word()
-        elif gametype == 'unknown':
-            self.word = None
-        elif gametype == 'select':
-            self.word = word
-        elif gametype == 'index':
-            self.word = Wordle.valid_answer_list[word_index]
-
-        self.state = "active"
-        self.turn_no = 1
-        self.turn_limit = turn_limit
-
+        
+        self.gametype = None
+        self.word = None
+        self.turn_no = None
+        self.turn_limit = None
+        self.state = None
         self.direct_matches = {}
         self.indirect_matches = {}
         self.potential_frequency = {}
         self.definitive_frequency = {}
         self.blacklist = []
+
+        if gamestate != None:
+            self.__load_gamestate(gamestate)
+        else:
+            self.gametype = gametype
+            if self.gametype == 'random':
+                self.word = self.__get_random_word()
+            elif self.gametype == 'unknown':
+                self.word = None
+            elif self.gametype == 'select':
+                self.word = word
+            elif self.gametype == 'index':
+                self.word = Wordle.valid_answer_list[word_index]
+
+            self.state = "active"
+            self.turn_no = 1
+            self.turn_limit = turn_limit
+
+            self.direct_matches = {}
+            self.indirect_matches = {}
+            self.potential_frequency = {}
+            self.definitive_frequency = {}
+            self.blacklist = []
 
 
     # getters
@@ -62,20 +78,36 @@ class Wordle():
             set(self.indirect_matches))
 
     @property
-    def debug_info(self):
-        out = ""
-        out += f'Word: {self.word} \n'
-        out += f'Gamestate: {self.state} - {self.turn_no}/{self.turn_limit} \n'
-        out += f'Direct Matches: {self.direct_matches} \n'
-        out += f'Indirect Matches: {self.indirect_matches} \n'
-        out += f'Blacklist: {self.blacklist} \n'
-        out += f'Potential Frequency: {self.potential_frequency} \n'
-        out += f'Definitive Frequency: {self.definitive_frequency} \n'
-        out += f'Remaining Answers: {len(self.get_remaining_answers)}/{len(Wordle.valid_answer_list)} \n'
-        return out
+    def gamestate(self):
+        gamestate = {}
+        gamestate["gametype"] = self.gametype
+        gamestate["word"] = self.word
+        gamestate["turn_no"] = self.turn_no
+        gamestate["turn_limit"] = self.turn_limit
+        gamestate["state"] = self.state
+        gamestate["direct_matches"] = self.direct_matches
+        gamestate["indirect_matches"] = self.indirect_matches
+        gamestate["potential_frequency"] = self.potential_frequency
+        gamestate["definitive_frequency"] = self.potential_frequency
+        gamestate["blacklist"] = self.blacklist
+
+        return gamestate
 
 
     # private functions
+
+    def __load_gamestate(self, gamestate):
+        self.gametype = gamestate["gametype"]
+        self.word = gamestate["word"]
+        self.turn_no = gamestate["turn_no"]
+        self.turn_limit = gamestate["turn_limit"]
+        self.state = gamestate["state"]
+        self.direct_matches = gamestate["direct_matches"]
+        self.indirect_matches = gamestate["indirect_matches"]
+        self.potential_frequency = gamestate["potential_frequency"]
+        self.definitive_frequency = gamestate["definitive_frequency"]
+        self.blacklist = gamestate["blacklist"]
+
 
     def __read_wordlist(self, wordlist):
         f = open(wordlist, 'r')
@@ -108,9 +140,11 @@ class Wordle():
                 self.blacklist.append(guess[i])
             i = i + 1
 
-    def __process_guess(self, guess):
 
-        colour_sequence = [0,0,0,0,0]
+    def __process_guess(self, guess, colour_sequence=None):
+
+        if colour_sequence == None:
+            colour_sequence = [0,0,0,0,0]
 
         coloured_letters = []
         yellow = []
@@ -125,9 +159,9 @@ class Wordle():
         # direct matches
         i = 0
         while i < 5:
-            if guess[i] == self.word[i]:
-                position_skip.append(i)
+            if (self.gametype != 'unknown' and guess[i] == self.word[i]) or colour_sequence[i] == 1:
                 colour_sequence[i] = 1
+                position_skip.append(i)
 
                 # record direct_match
                 self.__record_letter_match(self.direct_matches, guess[i], i)
@@ -152,7 +186,7 @@ class Wordle():
                     j = j + 1
                     continue
 
-                if guess[i] == self.word[j]:
+                if (self.gametype != 'unknown' and guess[i] == self.word[j]) or colour_sequence[i] == 2:
                     colour_sequence[i] = 2
                     word_index_skip.append(j)
 
@@ -193,7 +227,7 @@ class Wordle():
                 self.__record_potential_frequency(self.potential_frequency, current_letter_frequency)
         
         
-        return colour_sequence
+        return [0,0,0,0,0]
 
 
     def __validate_guess(self, guess):
@@ -220,14 +254,11 @@ class Wordle():
         if self.__validate_guess(guess) == False:
             return False
 
-        if colour_sequence != None:
-            if self.__validate_colour_sequence(colour_sequence) == False:
-                return False
-
-            self.__process_guess(guess, colour_sequence)
+        if self.gametype == 'unknown':
+            result = self.__process_guess(guess, colour_sequence)
         else:
             result = self.__process_guess(guess)
-
+    
         self.turn_no += 1
 
         if self.state == "win":
