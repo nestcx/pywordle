@@ -6,13 +6,10 @@ from pywordle.pywordle import DEFAULT_ANSWER_LIST, DEFAULT_GUESS_LIST
 
 class Wordle():
 
-    valid_guess_list = ()
-    valid_answer_list = ()
+    def __init__(self, gamestate = None, gametype = 'random', word = None, word_index = None, turn_limit = 6, valid_guess_list=DEFAULT_GUESS_LIST, valid_answer_list=DEFAULT_ANSWER_LIST):
 
-    def __init__(self, gamestate=None, gametype = 'random', word = None, word_index = None, turn_limit = 6, valid_guess_list=DEFAULT_GUESS_LIST, valid_answer_list=DEFAULT_ANSWER_LIST):
-
-        Wordle.valid_guess_list = self.__read_wordlist(valid_guess_list)
-        Wordle.valid_answer_list = self.__read_wordlist(valid_answer_list)
+        self.valid_guess_list = self.__read_wordlist(valid_guess_list)
+        self.valid_answer_list = self.__read_wordlist(valid_answer_list)
         
         self.gametype = None
         self.word = None
@@ -36,7 +33,7 @@ class Wordle():
             elif self.gametype == 'select':
                 self.word = word
             elif self.gametype == 'index':
-                self.word = Wordle.valid_answer_list[word_index]
+                self.word = self.valid_answer_list[word_index]
 
             self.state = "active"
             self.turn_no = 1
@@ -54,7 +51,7 @@ class Wordle():
         data["definitive_frequency"] = self.definitive_frequency
         data["blacklist"] = self.blacklist
 
-        return eliminate_words(data, Wordle.valid_answer_list)
+        return eliminate_words(data, self.valid_answer_list)
 
     @property
     def get_keyboard_data(self):
@@ -111,7 +108,7 @@ class Wordle():
         
 
     def __get_random_word(self):
-        return(random.choice(Wordle.valid_answer_list))
+        return(random.choice(self.valid_answer_list))
 
     
     # record direct and indirect matches dictionary
@@ -228,14 +225,10 @@ class Wordle():
     def __validate_guess(self, guess):
         if len(guess) != 5:
             return False
-        if guess in Wordle.valid_guess_list or guess in Wordle.valid_answer_list:
+        if guess in self.valid_guess_list or guess in self.valid_answer_list:
             return True
         
         return False
-
-    def __validate_colour_sequence(self, colour_sequence):
-        return True
-
 
 
 
