@@ -124,7 +124,15 @@ def _get_green_letters_count(direct_matches):
         count += len(green_indexes)
     return count
 
-
+def get_yellow_eliminator(game, word, colours):
+    guesses = game.valid_guess_list
+    for guess in guesses:
+        points = 0
+        
+        for i in range(5):
+            if colours[i] == 2:
+                if word[i] in guess and guess[i] != word[i]:
+                    points += 1
 
 
 # DEFINE CONSTS
@@ -133,6 +141,8 @@ def cleanup(game):
 
     # condition check.
     green_count = _get_green_letters_count(game.direct_matches)
+
+    
 
     if not(green_count >= 3 and green_count < 5 and game.turn_no < 5):
         return False

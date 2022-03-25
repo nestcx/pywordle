@@ -1,12 +1,8 @@
-import os
 from pywordle.pywordle.pywordle import Wordle
 from pywordle.utils.cli_keyboard import generate_coloured_keyboard
 from pywordle.utils.cli_colour_string import *
-from collections import Counter
+from pywordle.utils.clear_terminal import clear_terminal
 
-
-def clear_terminal():
-    os.system('cls' if os.name == 'nt' else 'clear')
 
 
 def guess_output(guess, colour_sequence):
@@ -25,7 +21,7 @@ def guess_output(guess, colour_sequence):
     return output
 
 
-game = Wordle(turn_limit=10, gametype="select", word="marks")
+game = Wordle(turn_limit=10, gametype="select", word="never")
 
 guesses = []
 colour_sequences = []
@@ -48,62 +44,31 @@ def get_turn_history():
 
     return output
 
+def prettify_gamestate(game):
+    output = ""
+    gamestate = game.gamestate
+    output += f'Gametype: {gamestate["gametype"]}' + '\n'
+    output += f'Word: {gamestate["word"]}' + '\n'
+    output += f'Turn No: {gamestate["turn_no"]}' + '\n'
+    output += f'Turn Limit: {gamestate["turn_limit"]}' + '\n'
+    output += f'State: {gamestate["state"]}' + '\n'
+    output += f'Direct Matches: {gamestate["direct_matches"]}' + '\n'
+    output += f'Indirect Matches: {gamestate["indirect_matches"]}' + '\n'
+    output += f'Potential Frequency: {gamestate["potential_frequency"]}' + '\n'
+    output += f'Definitive Frequency: {gamestate["definitive_frequency"]}' + '\n'
+    output += f'Blacklist: {gamestate["blacklist"]}' + '\n'
+    output += f'Remaining Words: {len(game.get_remaining_answers)}' + '\n'
+    return output
 
 def display_game_screen(message=""):
     clear_terminal()
-    print(game.gamestate)
+    print(prettify_gamestate(game))
     print(get_turn_history())
     print(generate_coloured_keyboard(game.get_keyboard_data))
     rem = game.get_remaining_answers
     if len(rem) < 50:
         print(rem)
     print(message)
-
-
-## CLEANUP WORD 
-def get_rm_freq(remaining_words):
-    return Counter(''.join(remaining_words))
-
-
-def get_dm_freq(direct_matches):
-    dm_freq = {}
-    for m in direct_matches:
-        dm_freq[m] = len(direct_matches[m])
-    return dm_freq
-
-def elim_m(remaining_words, dm_freq, rm_freq):
-    letters = set(''.join(remaining_words))
-    rem = []
-    for l in letters:
-        if l not in dm_freq:
-            rem.append(l)
-        else:
-            if rm_freq[l] != dm_freq[l] * len(remaining_words):
-                rem.append(l)
-    
-    return rem
-
-def find_intersections(wordlist, letters):
-    d = {0: [], 1: [], 2: [], 3: [], 4: [], 5: []}
-    for w in wordlist:
-        x = len(letters.intersection(w))
-        d[x].append(w)
-    return d
-
-
-def get_cleanup_word(all_words, remaining_words, direct_matches):
-    rm_freq = get_rm_freq(remaining_words)
-    dm_freq = get_dm_freq(direct_matches)
-    rem = elim_m(remaining_words, dm_freq, rm_freq)
-    ints = find_intersections(all_words, set(rem))
-
-    word = ''
-    for i in range(5, 0, -1):
-        if ints[i] != []:
-            word = ints[i][0]
-            break
-    
-    return word
 
 
 
@@ -113,9 +78,6 @@ display_game_screen()
 while game.state == "active":
 
     guess = input(f'{game.turn_no}: ')
-    if guess == 'cleanup':
-        print(f'cleanup:  {get_cleanup_word(game.valid_guess_list + game.valid_answer_list, game.get_remaining_answers, game.return_all_data["direct_matches"])}')
-        continue
 
     response = game.turn(guess)
 

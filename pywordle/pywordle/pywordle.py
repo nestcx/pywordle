@@ -42,12 +42,6 @@ class Wordle():
             self.turn_no = 1
             self.turn_limit = turn_limit
 
-            self.direct_matches = {}
-            self.indirect_matches = {}
-            self.potential_frequency = {}
-            self.definitive_frequency = {}
-            self.blacklist = []
-
 
     # getters
 
@@ -88,7 +82,7 @@ class Wordle():
         gamestate["direct_matches"] = self.direct_matches
         gamestate["indirect_matches"] = self.indirect_matches
         gamestate["potential_frequency"] = self.potential_frequency
-        gamestate["definitive_frequency"] = self.potential_frequency
+        gamestate["definitive_frequency"] = self.definitive_frequency
         gamestate["blacklist"] = self.blacklist
 
         return gamestate
@@ -227,7 +221,8 @@ class Wordle():
                 self.__record_potential_frequency(self.potential_frequency, current_letter_frequency)
         
         
-        return [0,0,0,0,0]
+        return colour_sequence
+
 
 
     def __validate_guess(self, guess):
