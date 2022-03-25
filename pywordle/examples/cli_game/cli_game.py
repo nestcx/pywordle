@@ -21,28 +21,19 @@ def guess_output(guess, colour_sequence):
     return output
 
 
-game = Wordle(turn_limit=10, gametype="select", word="never")
-
-guesses = []
-colour_sequences = []
-
-
-def get_turn_history():
+def get_turn_history(game):
     output = ""
-    
+    th = game.turn_history
     i = 1
     while i <= game.turn_limit:
-
-        g = f'{i}: '
-
-        if i <= game.turn_no - 1:
-            g += guess_output(guesses[i-1], colour_sequences[i-1])
-
-        output += g + '\n'
-
+        output += f'{i}: '
+        if game.turn_no > i:
+            output += guess_output(th[i]["guess"], th[i]["result"])
+        output += '\n'
         i += 1
 
     return output
+
 
 def prettify_gamestate(game):
     output = ""
@@ -60,10 +51,11 @@ def prettify_gamestate(game):
     output += f'Remaining Words: {len(game.get_remaining_answers)}' + '\n'
     return output
 
-def display_game_screen(message=""):
+
+def display_game_screen(game, message=""):
     clear_terminal()
     print(prettify_gamestate(game))
-    print(get_turn_history())
+    print(get_turn_history(game))
     print(generate_coloured_keyboard(game.get_keyboard_data))
     rem = game.get_remaining_answers
     if len(rem) < 50:
@@ -72,8 +64,9 @@ def display_game_screen(message=""):
 
 
 
-display_game_screen()
+game = Wordle(turn_limit=10, gametype="select", word="never")
 
+display_game_screen(game)
 
 while game.state == "active":
 
@@ -82,13 +75,10 @@ while game.state == "active":
     response = game.turn(guess)
 
     if response == False:
-        display_game_screen("Invalid guess - Try again")
+        display_game_screen(game, message="Invalid guess - Try again")
         continue
-    else:
-        guesses.append(response["guess"])
-        colour_sequences.append(response["result"])
 
-        display_game_screen()
+    display_game_screen(game)
 
 
 

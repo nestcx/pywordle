@@ -15,6 +15,7 @@ class Wordle():
         self.word = None
         self.turn_no = None
         self.turn_limit = None
+        self.turn_history = {}
         self.state = None
         self.direct_matches = {}
         self.indirect_matches = {}
@@ -247,6 +248,7 @@ class Wordle():
         else:
             result = self.__process_guess(guess)
     
+        self.turn_history[self.turn_no] = {"guess": guess, "result": result}
         self.turn_no += 1
 
         if self.state == "win":
