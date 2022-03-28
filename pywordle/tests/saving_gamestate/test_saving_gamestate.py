@@ -1,9 +1,7 @@
 from pywordle.pywordle.pywordle import Wordle
 
-
-
 def test_gamestate_dict():
-    game = Wordle(word="marks", gametype="select")
+    game = Wordle(answer="marks", gametype="select")
     game.turn("wings")
     game.turn("spend")
     gamestate = game.gamestate
@@ -14,7 +12,7 @@ def test_gamestate_dict():
 
 
 def test_gamestate_loads():
-    game = Wordle(word="marks", gametype="select")
+    game = Wordle(answer="marks", gametype="select")
     game.turn("wings")
     game.turn("spend")
     gamestate = game.gamestate

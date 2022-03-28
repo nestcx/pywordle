@@ -20,12 +20,14 @@ def test_intersection():
     z = letters.intersection('ddddk')
     assert len(z) == 2
 
+
 def find_intersections(wordlist, letters):
     d = {0: [], 1: [], 2: [], 3: [], 4: [], 5: []}
     for w in wordlist:
         x = len(letters.intersection(w))
         d[x].append(w)
     return d
+
 
 def test_length_sort():
     letters = set(['d', 'k', 'm', 'p', 'v'])
@@ -35,10 +37,12 @@ def test_length_sort():
     assert sorted(d[2]) == sorted(['spade', 'tempo', 'mumps'])
     assert sorted(d[3]) == sorted(['moped'])
 
+
 def test_length_sort():
     letters = set(['e','r', 'q', 'u', 'd', 'l'])
     d = find_intersections(wordlist, letters)
     print(d)
+
 
 def test_get_best_word():
     word = ''
@@ -49,6 +53,7 @@ def test_get_best_word():
             break
     
     assert word == 'ulcer'
+
 
 def test_get_green_count():
     c = 0
