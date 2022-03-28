@@ -11,7 +11,7 @@ with alive_bar(game_count, stats=False) as bar:
     for i in range(0, game_count):
 
         game = Wordle(gametype="index", answer_index=i)
-        game.turn('slate')
+        game.turn('salet')
 
         while game.state == "active":
             
