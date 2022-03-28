@@ -1,6 +1,5 @@
 from pywordle.pywordle.pywordle import Wordle
 from pywordle.examples.maximise_similarity.maximise_similarity import determine_best_guess
-from pywordle.examples.maximise_similarity.cleanup_word import cleanup
 
 
 game = Wordle(gametype="unknown")

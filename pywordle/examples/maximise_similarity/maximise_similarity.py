@@ -1,4 +1,4 @@
-from pywordle.examples.maximise_similarity.cleanup_word import cleanup
+from pywordle.examples.maximise_similarity.cleanup_guess import cleanup
 from pywordle.examples.maximise_similarity.word_frequency import get_highest_frequency
 
 def determine_best_guess(game):

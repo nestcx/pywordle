@@ -20,7 +20,7 @@ with alive_bar(game_count) as bar:
             game.turn(guess)
 
             if game.state == "loss":
-                print(game.word)
+                print(game.answer)
 
         tracker.submit(game)
         bar()

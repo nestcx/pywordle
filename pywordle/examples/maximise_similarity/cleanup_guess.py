@@ -91,18 +91,18 @@ def _get_direct_matches_letter_frequency(direct_matches):
     return dm_freq
 
 
-def _get_cleanup_letter_set(remaining_words, dm_freq, rm_freq):
+def _get_cleanup_letter_set(remaining_answers, dm_freq, rm_freq):
 
     # start with a set of all letters from remaining words
     # add letters to list 'x' that could be in the word.
-    letters = set(''.join(remaining_words))
+    letters = set(''.join(remaining_answers))
     x = []
 
     for l in letters:
         if l not in dm_freq:
             x.append(l)
         else:
-            if rm_freq[l] != dm_freq[l] * len(remaining_words):
+            if rm_freq[l] != dm_freq[l] * len(remaining_answers):
                 x.append(l)
     
     return x
@@ -123,16 +123,6 @@ def _get_green_letters_count(direct_matches):
     for green_indexes in direct_matches.values():
         count += len(green_indexes)
     return count
-
-def get_yellow_eliminator(game, word, colours):
-    guesses = game.valid_guess_list
-    for guess in guesses:
-        points = 0
-        
-        for i in range(5):
-            if colours[i] == 2:
-                if word[i] in guess and guess[i] != word[i]:
-                    points += 1
 
 
 # DEFINE CONSTS

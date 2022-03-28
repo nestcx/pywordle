@@ -10,8 +10,8 @@ tracker = SolveTracker(turn_limit=6)
 with alive_bar(game_count, stats=False) as bar:
     for i in range(0, game_count):
 
-        game = Wordle(gametype="index", word_index=i)
-        game.turn('salet')
+        game = Wordle(gametype="index", answer_index=i)
+        game.turn('slate')
 
         while game.state == "active":
             
@@ -22,7 +22,7 @@ with alive_bar(game_count, stats=False) as bar:
             turn = game.turn(guess)
 
             if game.state == "loss":
-                print(game.word)
+                print(game.answer)
 
         tracker.submit(game)
         clear_terminal()
