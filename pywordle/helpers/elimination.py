@@ -50,7 +50,7 @@ def __test_letter_frequency(plf, dlf, word):
 
 # returns an answers list after putting data through tests, eliminating words
 # from complete words list
-def eliminate_words(data, lines):
+def eliminate_answers(data, lines):
 
     remaining_answers = []
 

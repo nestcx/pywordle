@@ -39,7 +39,7 @@ def prettify_gamestate(game):
     output = ""
     gamestate = game.gamestate
     output += f'Gametype: {gamestate["gametype"]}' + '\n'
-    output += f'Word: {gamestate["word"]}' + '\n'
+    output += f'Answer: {gamestate["answer"]}' + '\n'
     output += f'Turn No: {gamestate["turn_no"]}' + '\n'
     output += f'Turn Limit: {gamestate["turn_limit"]}' + '\n'
     output += f'State: {gamestate["state"]}' + '\n'
@@ -53,18 +53,22 @@ def prettify_gamestate(game):
 
 
 def display_game_screen(game, message=""):
+
     clear_terminal()
+
     print(prettify_gamestate(game))
     print(get_turn_history(game))
     print(generate_coloured_keyboard(game.get_keyboard_data))
+
     rem = game.get_remaining_answers
     if len(rem) < 50:
         print(rem)
+
     print(message)
 
 
 
-game = Wordle(turn_limit=10, gametype="select", word="never")
+game = Wordle(turn_limit=10, gametype="select", answer="never")
 
 display_game_screen(game)
 
@@ -81,12 +85,11 @@ while game.state == "active":
     display_game_screen(game)
 
 
-
 message = ""
 
 if game.state == "win":
     message = "You Win!"
 elif game.state == "loss":
-    message = f'The word was: {game.word}'
+    message = f'The answer was: {game.answer}'
 
-display_game_screen(message)
+display_game_screen(game, message)

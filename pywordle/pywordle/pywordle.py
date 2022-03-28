@@ -145,13 +145,13 @@ class Wordle():
         word_index_skip = []
 
         # exact match
-        if guess == self.word:
+        if guess == self.answer:
             self.state = "win"
 
         # direct matches
         i = 0
         while i < 5:
-            if (self.gametype != 'unknown' and guess[i] == self.word[i]) or colour_sequence[i] == 1:
+            if (self.gametype != 'unknown' and guess[i] == self.answer[i]) or colour_sequence[i] == 1:
                 colour_sequence[i] = 1
                 position_skip.append(i)
 
@@ -178,7 +178,7 @@ class Wordle():
                     j = j + 1
                     continue
 
-                if (self.gametype != 'unknown' and guess[i] == self.word[j]) or colour_sequence[i] == 2:
+                if (self.gametype != 'unknown' and guess[i] == self.answer[j]) or colour_sequence[i] == 2:
                     colour_sequence[i] = 2
                     word_index_skip.append(j)
 
