@@ -1,18 +1,18 @@
 import random
 from collections import Counter
 from tkinter import N
-from pywordle.helpers.elimination import eliminate_words
+from pywordle.helpers.elimination import eliminate_answers
 from pywordle.pywordle import DEFAULT_ANSWER_LIST, DEFAULT_GUESS_LIST
 
 class Wordle():
 
-    def __init__(self, gamestate = None, gametype = 'random', word = None, word_index = None, turn_limit = 6, valid_guess_list=DEFAULT_GUESS_LIST, valid_answer_list=DEFAULT_ANSWER_LIST):
+    def __init__(self, gamestate = None, gametype = 'random', answer = None, answer_index = None, turn_limit = 6, valid_guess_list=DEFAULT_GUESS_LIST, valid_answer_list=DEFAULT_ANSWER_LIST):
 
         self.valid_guess_list = self.__read_wordlist(valid_guess_list)
         self.valid_answer_list = self.__read_wordlist(valid_answer_list)
         
         self.gametype = None
-        self.word = None
+        self.answer = None
         self.turn_no = None
         self.turn_limit = None
         self.turn_history = {}
@@ -28,13 +28,13 @@ class Wordle():
         else:
             self.gametype = gametype
             if self.gametype == 'random':
-                self.word = self.__get_random_word()
+                self.answer = self.__get_random_word()
             elif self.gametype == 'unknown':
-                self.word = None
+                self.answer = None
             elif self.gametype == 'select':
-                self.word = word
+                self.answer = answer
             elif self.gametype == 'index':
-                self.word = self.valid_answer_list[word_index]
+                self.answer = self.valid_answer_list[answer_index]
 
             self.state = "active"
             self.turn_no = 1
@@ -52,7 +52,7 @@ class Wordle():
         data["definitive_frequency"] = self.definitive_frequency
         data["blacklist"] = self.blacklist
 
-        return eliminate_words(data, self.valid_answer_list)
+        return eliminate_answers(data, self.valid_answer_list)
 
     @property
     def get_keyboard_data(self):
@@ -73,7 +73,7 @@ class Wordle():
     def gamestate(self):
         gamestate = {}
         gamestate["gametype"] = self.gametype
-        gamestate["word"] = self.word
+        gamestate["answer"] = self.answer
         gamestate["turn_no"] = self.turn_no
         gamestate["turn_limit"] = self.turn_limit
         gamestate["state"] = self.state
@@ -90,7 +90,7 @@ class Wordle():
 
     def __load_gamestate(self, gamestate):
         self.gametype = gamestate["gametype"]
-        self.word = gamestate["word"]
+        self.answer = gamestate["answer"]
         self.turn_no = gamestate["turn_no"]
         self.turn_limit = gamestate["turn_limit"]
         self.state = gamestate["state"]
