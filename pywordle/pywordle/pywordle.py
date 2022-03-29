@@ -246,7 +246,7 @@ class Wordle():
                 self.potential_frequency.pop(letter, None)
                 break
             else: 
-                self.__record_potential_frequency(self.potential_frequency, current_letter_frequency)
+                self.__record_potential_frequency(current_letter_frequency)
         
         
         return colour_sequence

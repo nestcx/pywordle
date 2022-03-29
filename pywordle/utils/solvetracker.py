@@ -7,15 +7,22 @@ class SolveTracker():
         self.wins = 0
         self.losses = 0
         self.turn_no_history = []
+        self.turn_history = {}
+        self.loss_answers = []
 
 
     def submit(self, finished_game):
+
         if finished_game.state == "win":
             self.wins += 1
         if finished_game.state == "loss":
             self.losses += 1
+            self.loss_answers.append(finished_game.answer)
+
         self.turn_no_history.append(finished_game.turn_no - 1)
-    
+
+        self.turn_history[finished_game.answer] = finished_game.turn_history
+
 
     def get_distribution(self):
         c = Counter(self.turn_no_history)
@@ -27,7 +34,7 @@ class SolveTracker():
         return c, pc
 
 
-    def vis_dist(self, pc):
+    def vis_dist(self, c, pc):
 
         output = ''
 
@@ -41,7 +48,9 @@ class SolveTracker():
             for x in range(pc[i]):
                 output += ' '
 
-            output += '\033[0m\n'
+            output += f'\033[0m{c[i]}\n'
+        
+        output += f'X: {len(self.loss_answers)}\n'
 
         return f'{output}\033[0m'
 
@@ -50,8 +59,12 @@ class SolveTracker():
         data = {}
         data["win_rate"] = f'{self.wins} / {(self.wins + self.losses)}'
         data["avg_turns"] = (sum(self.turn_no_history) / len(self.turn_no_history))
+        data["total_turns"] = sum(self.turn_no_history)
         data["turn_distribution"] = self.get_distribution()[0]
+        data["loss_answers"] = self.loss_answers
         return data
 
+
     def get_graph(self):
-        return self.vis_dist(self.get_distribution()[1])
+        dist = self.get_distribution()
+        return self.vis_dist(dist[0], dist[1])

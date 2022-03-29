@@ -38,11 +38,9 @@ def _calculate_word_scores(max_freq, frequencies, wordlist):
     return word_scores
 
 
-# wrapper function, exposed function
-def get_highest_frequency(game):
-    wordlist = game.get_remaining_answers
+def get_highest_frequency(wordlist, wordlist2):
     freq = _get_frequencies(wordlist)
     max_freq = _calculate_max_frequency(freq)
-    scores = _calculate_word_scores(max_freq, freq, wordlist)
+    scores = _calculate_word_scores(max_freq, freq, wordlist2)
 
     return min(scores, key=scores.get)

@@ -3,33 +3,44 @@ from pywordle.pywordle.pywordle import Wordle
 from pywordle.utils.solvetracker import SolveTracker
 from alive_progress import alive_bar
 from maximise_similarity import determine_best_guess
+import json
 
 game_count = len(Wordle().valid_answer_list)
 tracker = SolveTracker(turn_limit=6)
+
 
 with alive_bar(game_count, stats=False) as bar:
     for i in range(0, game_count):
 
         game = Wordle(gametype="index", answer_index=i)
-        game.turn('salet')
+        game.turn('slate')
 
         while game.state == "active":
             
-            remaining_words = game.get_remaining_answers
+            guess_response = determine_best_guess(game)
 
-            guess = determine_best_guess(game)
-            
-            turn = game.turn(guess)
+            turn = game.turn(guess_response)
 
-            if game.state == "loss":
-                print(game.answer)
-
+        f = open("dump.json", "a")
+        f.write(json.dumps(tracker.turn_history))
+        f.close()
         tracker.submit(game)
         clear_terminal()
         print(tracker.get_graph())
         bar()
 
 print()
-print(f'win rate: {tracker.get_stats()["win_rate"]}')
-print(f'average turns: {tracker.get_stats()["avg_turns"]}')
+
+stats = tracker.get_stats()
+
+print(f'win rate: {stats["win_rate"]}')
+print(f'average turns: {stats["avg_turns"]}')
+print(f'average turns: {stats["total_turns"]}')
+print(f'loss answers: {stats["loss_answers"]}')
+
 print(tracker.get_graph())
+
+
+#f = open("dump.json", "w")
+#f.write(json.dumps(tracker.turn_history))
+#f.close()

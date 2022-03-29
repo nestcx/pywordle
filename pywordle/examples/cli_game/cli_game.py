@@ -67,8 +67,9 @@ def display_game_screen(game, message=""):
     print(message)
 
 
+word = input()
 
-game = Wordle(turn_limit=10, gametype="select", answer="never")
+game = Wordle(turn_limit=10, gametype="select", answer=word)
 
 display_game_screen(game)
 

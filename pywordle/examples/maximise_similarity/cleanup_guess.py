@@ -1,5 +1,5 @@
 from collections import Counter
-
+from pywordle.examples.maximise_similarity.word_frequency import get_highest_frequency
 
 """
 
@@ -125,59 +125,33 @@ def _get_green_letters_count(direct_matches):
     return count
 
 
+
 # DEFINE CONSTS
 
 def cleanup(game):
 
-    # condition check.
-    green_count = _get_green_letters_count(game.direct_matches)
-
-    
-
-    if not(green_count >= 3 and green_count < 5 and game.turn_no < 5):
+    # outright no cleanup if on first turn or only two answers left
+    if game.turn_no < 2 or len(game.get_remaining_answers) <= 2:
         return False
 
+    cs = game.turn_history[game.turn_no-1]["result"]
+    green_count = cs.count(1)
 
-    # get cleanup words
-    
+    if not(green_count >= 3 and game.turn_no < 6):
+        return False
+
     rwlf = _get_remaining_answers_letter_frequency(game.get_remaining_answers)
     dmlf = _get_direct_matches_letter_frequency(game.direct_matches)
     letters = _get_cleanup_letter_set(game.get_remaining_answers, dmlf, rwlf)
     cleanup_words = _get_cleanup_words(game.valid_guess_list, letters)
 
-
-    # select cleanup word
-
     word = ''
-    for i in range(5, 0, -1):
+    for i in range (5, 0, -1):
         if cleanup_words[i] != []:
-            word = cleanup_words[i][0]
+            word = get_highest_frequency(cleanup_words[i], cleanup_words[i])
             break
-    
+
     return word
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
