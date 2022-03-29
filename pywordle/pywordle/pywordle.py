@@ -2,7 +2,8 @@ import random
 from collections import Counter
 from pywordle.helpers.elimination import eliminate_answers
 from pywordle.pywordle import DEFAULT_ANSWER_LIST, DEFAULT_GUESS_LIST
-
+from pywordle.utils.flatten_list import flatten_list
+import copy
 
 class Wordle():
 
@@ -87,6 +88,30 @@ class Wordle():
         gamestate["blacklist"] = self.blacklist
 
         return gamestate
+
+
+    @property
+    def true_yellow(self):
+
+        yellow_letters = copy.deepcopy(self.indirect_matches)
+        dm_indexes = flatten_list(self.direct_matches.values())
+        rem = self.get_remaining_answers
+        jrem = ''.join(rem)
+
+        yk = list(yellow_letters.keys())
+
+        for letter in yk:
+
+            if letter in self.direct_matches:
+                if len(self.direct_matches[letter]) * len(rem) == jrem.count(letter):
+                    yellow_letters.pop(letter)
+                    continue
+
+            for index in yellow_letters[letter]:
+                if index in dm_indexes:
+                    yellow_letters[letter].remove(index)
+
+        return yellow_letters
 
 
     # private functions
