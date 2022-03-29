@@ -1,8 +1,8 @@
 import random
 from collections import Counter
-from tkinter import N
 from pywordle.helpers.elimination import eliminate_answers
 from pywordle.pywordle import DEFAULT_ANSWER_LIST, DEFAULT_GUESS_LIST
+
 
 class Wordle():
 
@@ -54,6 +54,7 @@ class Wordle():
 
         return eliminate_answers(data, self.valid_answer_list)
 
+
     @property
     def get_keyboard_data(self):
         key_data = {}
@@ -62,12 +63,14 @@ class Wordle():
         key_data["black"] = self.blacklist
         return key_data
 
+
     @property
     def get_keystrokes(self):
         return set.union(
             set(self.blacklist), 
             set(self.direct_matches), 
             set(self.indirect_matches))
+
 
     @property
     def gamestate(self):
@@ -120,11 +123,13 @@ class Wordle():
         if index not in dict[letter]:
             dict[letter].append(index)
 
-    def __record_potential_frequency(self, dict, letters):
+
+    def __record_potential_frequency(self, letters):
         for x, i in letters.items():
-            if (dict.get(x) == None or dict[x] < i):
-                dict[x] = i
+            if (self.potential_frequency.get(x) == None or self.potential_frequency[x] < i):
+                self.potential_frequency[x] = i
             
+
     def __record_blacklist(self, guess, coloured_letters):
         i = 0
         while i < 5:
