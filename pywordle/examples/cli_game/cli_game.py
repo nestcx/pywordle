@@ -59,6 +59,7 @@ def display_game_screen(game, message=""):
     print(prettify_gamestate(game))
     print(get_turn_history(game))
     print(generate_coloured_keyboard(game.get_keyboard_data))
+    print(game.true_yellow)
 
     rem = game.get_remaining_answers
     if len(rem) < 50:
@@ -67,9 +68,7 @@ def display_game_screen(game, message=""):
     print(message)
 
 
-word = input()
-
-game = Wordle(turn_limit=10, gametype="select", answer=word)
+game = Wordle(turn_limit=10)
 
 display_game_screen(game)
 

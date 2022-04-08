@@ -5,12 +5,12 @@ from alive_progress import alive_bar
 from maximise_similarity import determine_best_guess
 import json
 
+offset = 0
 game_count = len(Wordle().valid_answer_list)
 tracker = SolveTracker(turn_limit=6)
 
-
 with alive_bar(game_count, stats=False) as bar:
-    for i in range(0, game_count):
+    for i in range(offset, game_count):
 
         game = Wordle(gametype="index", answer_index=i)
         game.turn('slate')

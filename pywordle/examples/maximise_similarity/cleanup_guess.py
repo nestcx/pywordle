@@ -137,7 +137,7 @@ def cleanup(game):
     cs = game.turn_history[game.turn_no-1]["result"]
     green_count = cs.count(1)
 
-    if not(green_count >= 3 and game.turn_no < 6):
+    if not(green_count >= 2 and game.turn_no < 5):
         return False
 
     rwlf = _get_remaining_answers_letter_frequency(game.get_remaining_answers)
@@ -148,7 +148,7 @@ def cleanup(game):
     word = ''
     for i in range (5, 0, -1):
         if cleanup_words[i] != []:
-            word = get_highest_frequency(cleanup_words[i], cleanup_words[i])
+            word = get_highest_frequency(cleanup_words[i], cleanup_words[i], game.true_yellow, game.turn_no)
             break
 
     return word

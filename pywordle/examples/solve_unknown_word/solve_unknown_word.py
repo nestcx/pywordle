@@ -21,4 +21,3 @@ while True:
         continue
 
     print(result)
-    print(game.get_remaining_answers)

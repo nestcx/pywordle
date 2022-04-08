@@ -26,7 +26,7 @@ def _calculate_max_frequency(frequencies):
     return max_freq
 
 
-def _calculate_word_scores(max_freq, frequencies, wordlist):
+def _calculate_word_scores(max_freq, frequencies, wordlist, true_yellow):
 
     word_scores = {}
 
@@ -37,10 +37,22 @@ def _calculate_word_scores(max_freq, frequencies, wordlist):
 
     return word_scores
 
+def _calculate_word_scores2(max_freq, frequencies, wordlist, true_yellow):
 
-def get_highest_frequency(wordlist, wordlist2):
+    word_scores = {}
+
+    for w in wordlist:
+        word_scores[w] = 0
+        for i in range(0, 5):
+            word_scores[w] += max_freq[i] - frequencies[w[i]][i]
+    return word_scores
+
+def get_highest_frequency(wordlist, wordlist2, true_yellow, turn_no):
     freq = _get_frequencies(wordlist)
     max_freq = _calculate_max_frequency(freq)
-    scores = _calculate_word_scores(max_freq, freq, wordlist2)
+    if turn_no == 2:
+        scores = _calculate_word_scores(max_freq, freq, wordlist2, true_yellow)
+    else:
+        scores = _calculate_word_scores2(max_freq, freq, wordlist2, true_yellow)
 
     return min(scores, key=scores.get)
