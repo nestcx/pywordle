@@ -275,8 +275,13 @@ This solver will select words at random from the remaining answers list provided
 ### <a name="s1">1)  Create the folder/file structure</a>
 
 ```
-pywordle/solver1/run.py
-pywordle/solver1/solver.py
+pywordle/
+    solvers/
+        __init__.py
++       solver1/
++	    __init__.py
++	    run.py
++	    solver.py
 ```
 
 <br>
@@ -302,9 +307,13 @@ game = Wordle(valid_guess_list = MY_WORD_LIST, valid_answer_list = VALID_ANSWER_
 
 ### <a name="s3">3)  Copy the solver template into run.py</a>
 
-The full solver template can be found at `pywordle/examples/solver_template/solver_template.py`.
+The solver template can be found at `pywordle/examples/solver_template/solver_template.py`.
 
 ```python
+import random
+from alive_progress import alive_bar
+from pywordle.utils.clear_terminal import clear_terminal
+
 # import Wordle class
 from pywordle.pywordle.pywordle import Wordle
 
@@ -312,11 +321,16 @@ from pywordle.pywordle.pywordle import Wordle
 from pywordle.utils.solvetracker import SolveTracker
 
 
+
+# our wonderful algorithm
+def determine_best_guess(game):
+    return random.choice(game.get_remaining_answers)
+
+
 # determine how many times to loop
 game_count = len(Wordle().valid_answer_list)
 
 tracker = SolveTracker(turn_limit=6)
-
 
 with alive_bar(game_count) as bar:
     for i in range(0, game_count):
@@ -325,8 +339,8 @@ with alive_bar(game_count) as bar:
         game = Wordle(gametype='index', answer_index=i)
 
         while game.state == "active":
-            # we need to integrate our solver here!
-            guess = ...
+            # the solver returns the it's best 'guess' to play.
+            guess = determine_best_guess(game)
             game.turn(guess)
 
             if game.state == "loss":
@@ -348,7 +362,9 @@ print(tracker.get_stats())
 ### <a name="s4">4)  Create the solving algorithm in solver.py</a>
 
 ```Python
-def _alg(answers)
+import random
+
+def _alg(answers):
 	return random.choice(answers)
 
 def determine_best_guess(game):
@@ -362,13 +378,13 @@ def determine_best_guess(game):
 `determine_best_guess()` is our entry point into the algorithm, and should be set up to return the next guess for the game loop in `run.py` to use, as is set up already in the template.
 
 ```Python
-from pywordle.solver1.solver import determine_best_guess
+from pywordle.solvers.solver1 import solver.determine_best_guess
 
 ...
 			while game.state == "active":
         
                 # the solver returns it's best 'guess' to play.
-                guess = determine_best_guess(game)
+                guess = solver.determine_best_guess(game)
                 game.turn(guess)
 ...
 ```
