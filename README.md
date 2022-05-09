@@ -1,4 +1,4 @@
-# Pywordle
+# PyWordle
 
 PyWordle is a simple framework written in Python that helps you build your own Wordle solving algorithms!
 
