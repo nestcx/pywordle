@@ -24,7 +24,7 @@ with alive_bar(game_count) as bar:
     for i in range(0, game_count):
 		
         # the gametype 'index' sets the answer to the nth answer in the answers list
-        game = Wordle(gametype='index', word_index=i)
+        game = Wordle(gametype='index', answer_index=i)
 
         while game.state == "active":
             # the solver returns the it's best 'guess' to play.
