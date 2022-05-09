@@ -33,7 +33,7 @@ PyWordle let's you simulate and automate Wordle games to run against solving alg
 
 PyWordle offers several key sets of data to help create solvers, such as the `get_remaining_answers` property which eliminates answers from a designated `valid_answer_list` and returns a list of the possible remaining answers. 
 
-
+It also comes with a visual debugger, a solve tracker to track batches of games, a working solver with a 100% win rate as an example, and much more!
 
 <br>
 
