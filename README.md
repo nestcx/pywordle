@@ -300,7 +300,7 @@ game = Wordle(valid_guess_list = MY_WORD_LIST, valid_answer_list = VALID_ANSWER_
 
 <br>
 
-### <a name="s3">3 -- Copy the solver template into run.py</a>
+### <a name="s3">3)  Copy the solver template into run.py</a>
 
 The full solver template can be found at `pywordle/examples/solver_template/solver_template.py`.
 
@@ -357,7 +357,7 @@ def determine_best_guess(game):
 
 <br>
 
-### <a name="s5">5 -- Import and integrate the solver into run.py</a>
+### <a name="s5">5)  Import and integrate the solver into run.py</a>
 
 `determine_best_guess()` is our entry point into the algorithm, and should be set up to return the next guess for the game loop in `run.py` to use, as is set up already in the template.
 
@@ -377,7 +377,7 @@ from pywordle.solver1.solver import determine_best_guess
 
 <br>
 
-### <a name="s1">6 -- Run the solver!</a>
+### <a name="s1">6)  Run the solver!</a>
 
 ```bash
 (.venv) ~/pywordle$ python solver1/run.py
