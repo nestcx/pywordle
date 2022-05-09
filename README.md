@@ -1,7 +1,8 @@
 # PyWordle
 
-PyWordle is a simple framework written in Python that helps you build your own Wordle solving algorithms!
+PyWordle is a **simple** framework written in Python that helps you build your own Wordle solving algorithms!
 
+<br>
 
 ### Table of Contents
 
@@ -24,7 +25,7 @@ PyWordle is a simple framework written in Python that helps you build your own W
   - [Unknown word solver](#unknown-word-solver)
   - [My solver (maximise_similarity)](#my-solver)
 
-
+<br>
 
 ## <a name="what-is-it">What is it?</a>
 
