@@ -2,7 +2,7 @@ from pywordle.pywordle.pywordle import Wordle
 from pywordle.utils.cli_keyboard import generate_coloured_keyboard
 from pywordle.utils.cli_colour_string import *
 from pywordle.utils.clear_terminal import clear_terminal
-
+from pywordle.utils.solvetracker import SolveTracker
 
 
 def guess_output(guess, colour_sequence):
@@ -23,7 +23,9 @@ def guess_output(guess, colour_sequence):
 
 def get_turn_history(game):
     output = ""
+
     th = game.turn_history
+
     i = 1
     while i <= game.turn_limit:
         output += f'{i}: '
@@ -37,7 +39,9 @@ def get_turn_history(game):
 
 def prettify_gamestate(game):
     output = ""
+
     gamestate = game.gamestate
+
     output += f'Gametype: {gamestate["gametype"]}' + '\n'
     output += f'Answer: {gamestate["answer"]}' + '\n'
     output += f'Turn No: {gamestate["turn_no"]}' + '\n'
@@ -48,7 +52,9 @@ def prettify_gamestate(game):
     output += f'Potential Frequency: {gamestate["potential_frequency"]}' + '\n'
     output += f'Definitive Frequency: {gamestate["definitive_frequency"]}' + '\n'
     output += f'Blacklist: {gamestate["blacklist"]}' + '\n'
+    output += f'True Yellow: {game.true_yellow}' + '\n'
     output += f'Remaining Words: {len(game.get_remaining_answers)}' + '\n'
+
     return output
 
 
@@ -59,7 +65,6 @@ def display_game_screen(game, message=""):
     print(prettify_gamestate(game))
     print(get_turn_history(game))
     print(generate_coloured_keyboard(game.get_keyboard_data))
-    print(game.true_yellow)
 
     rem = game.get_remaining_answers
     if len(rem) < 50:
@@ -69,6 +74,7 @@ def display_game_screen(game, message=""):
 
 
 game = Wordle(turn_limit=10)
+tracker = SolveTracker(turn_limit=10)
 
 display_game_screen(game)
 
@@ -85,6 +91,8 @@ while game.state == "active":
     display_game_screen(game)
 
 
+tracker.submit(game)
+
 message = ""
 
 if game.state == "win":
@@ -92,4 +100,7 @@ if game.state == "win":
 elif game.state == "loss":
     message = f'The answer was: {game.answer}'
 
+
 display_game_screen(game, message)
+stats = tracker.get_stats()
+print(f'Turns taken: {stats["total_turns"]}')

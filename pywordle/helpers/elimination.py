@@ -66,7 +66,6 @@ def eliminate_answers(data, answers):
 
         if __test_letter_frequency(data["potential_frequency"], data["definitive_frequency"], answer) == False:
             continue
-
         
         remaining_answers.append(answer)
     

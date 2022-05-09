@@ -21,9 +21,6 @@ with alive_bar(game_count, stats=False) as bar:
 
             turn = game.turn(guess_response)
 
-        f = open("dump.json", "a")
-        f.write(json.dumps(tracker.turn_history))
-        f.close()
         tracker.submit(game)
         clear_terminal()
         print(tracker.get_graph())
