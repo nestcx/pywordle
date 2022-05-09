@@ -9,9 +9,7 @@ PyWordle is a simple framework written in Python that helps you build your own W
 - [Installation](#installation)
 - [How does it work?](#how-does-it-work)
 - [Creating an example solver](#creating-an-example-solver)
-  
-  1 - [Create the file/folder structure](#s1)
-  
+  1. [Create the file/folder structure](#s1)
   2. [Import wordlists](#s2)
   3. [Copy the solver template to run.py](#s3)
   4. [Create the solving algorithm in solver.py](#s4)
@@ -28,13 +26,13 @@ PyWordle is a simple framework written in Python that helps you build your own W
 
 
 
-### <a name="what-is-it">What is it?</a>
+## <a name="what-is-it">What is it?</a>
 
 PyWordle let's you simulate and automate Wordle games to run against solving algorithms. It provides a simple template (`solver_template.py` found under `pywordle/examples/solver_template`) which lets you 'plug and play' solvers. PyWordle offers several key sets of data to help create solvers, such as the `get_remaining_answers` property which eliminates answers from a designated `valid_answer_list` and returns a list of the possible remaining answers. 
 
 
 
-### <a name="installation">Installation</a>
+## <a name="installation">Installation</a>
 
 Clone this project, create a new virtual environment at the root of the project, and install it as a Python package in 'editable' mode.
 
