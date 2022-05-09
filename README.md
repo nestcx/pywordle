@@ -1,10 +1,10 @@
-<span style="font-size: 3rem; font-weight: bold; color: darkolivegreen;">PyWordle</span>
+# PyWordle
 
 PyWordle is a simple framework written in Python that helps you build your own Wordle solving algorithms!
 
 
 
-<span style="font-size: 1.5rem">Table of Contents</span>
+### Table of Contents
 
 - [What is it?](#what-is-it)
 - [Installation](#installation)
@@ -27,13 +27,13 @@ PyWordle is a simple framework written in Python that helps you build your own W
 
 
 
-<a name="introduction"><span style="font-size: 1.5rem; color: black; font-weight: bold">What is it?</span></a>
+### <a name="what-is-it">What is it?</a>
 
 PyWordle let's you simulate and automate Wordle games to run against solving algorithms. It provides a simple template (`solver_template.py` found under `pywordle/examples/solver_template`) which lets you 'plug and play' solvers. PyWordle offers several key sets of data to help create solvers, such as the `get_remaining_answers` property which eliminates answers from a designated `valid_answer_list` and returns a list of the possible remaining answers. 
 
 
 
-<a name="installation"><span style="font-size: 1.5rem; color: black; font-weight: bold">Installation</span></a>
+### <a name="installation">Installation</a>
 
 Clone this project, create a new virtual environment at the root of the project, and install it as a Python package in 'editable' mode.
 
@@ -45,7 +45,7 @@ Clone this project, create a new virtual environment at the root of the project,
 
 
 
-<a name="how-does-it-work"><span style="font-size: 1.5rem; color: black; font-weight: bold">How does it work?</span></a>
+### <a name="how-does-it-work">How does it work?</a>
 
 Under `pywordle/examples/solver_template` you can find the basic solver template called `solver_template.py` which runs a simple algorithm against an entire answer list.
 
@@ -115,13 +115,13 @@ When running multiple games at a time you can submit each game instance to a `So
 
 
 
-<a name="creating-an-example-solver"><span style="font-size: 1.5rem; color: black; font-weight: bold">Creating an example solver </span></a>
+### <a name="creating-an-example-solver">Creating an example solver</a>
 
 This solver will select words at random from the answers list.
 
 
 
-<a name="s1"><span style="color:black">**1)  Create the folder/file structure**</span></a>
+#### <a name="s1">1)  Create the folder/file structure</a>
 
 ```
 pywordle/solver1/run.py
@@ -130,7 +130,7 @@ pywordle/solver1/solver.py
 
 
 
-<a name="s2"><span style="color:black">**2)  Import wordlists**</span></a>
+#### <a name="s2">2)  Import wordlists</a>
 
 Wordlists are stored as text files in `pywordle/data`. Included are three wordlists, and you can add more.
 
@@ -149,13 +149,13 @@ game = Wordle(valid_guess_list = MY_WORD_LIST, valid_answer_list = VALID_ANSWER_
 
 
 
-<a name="s3"><span style="color:black">**3) Copy the solver template into run.py**</span></a>
+#### <a name="s3">3) Copy the solver template into run.py</a>
 
 The solver template can be found at `pywordle/examples/solver_template/solver_template.py`.
 
 
 
-<a name="s4"><span style="color:black">**4) Create the solving algorithm in solver.py**</span></a>
+#### <a name="s4">4) Create the solving algorithm in solver.py</a>
 
 ```Python
 def _alg(answers)
@@ -167,7 +167,7 @@ def determine_best_guess(game):
 
 
 
-<a name="s5"><span style="color:black">**5) Import the solver into run.py**</span></a>
+#### <a name="s5">5) Import the solver into run.py</a>
 
 `determine_best_guess()` is our entry point into the algorithm, and should be set up to return the next guess for the game loop in `run.py` to use, as is set up already in the template.
 
@@ -177,7 +177,7 @@ from pywordle.solver1.solver import determine_best_guess
 
 
 
-<a name="s1"><span style="color:black">**6) Run the solver!**</span></a>
+#### <a name="s1">6) Run the solver!</a>
 
 ```bash
 (.venv) ~/pywordle$ python solver1/run.py
@@ -185,11 +185,11 @@ from pywordle.solver1.solver import determine_best_guess
 
 
 
-<a name="learning-the-framework"><span style="font-size: 1.5rem; color: black; font-weight: bold">Learning the framework</span></a>
+### <a name="learning-the-framework">Learning the framework</a>
 
 
 
-<a name="create-an-instance-of-a-game"><span style="color:black">**Create an instance of a game**</span></a>
+#### <a name="create-an-instance-of-a-game">**Create an instance of a game**</a>
 
 There are four different gametypes available based on where the `answer` comes from. The gametypes are:
 
@@ -220,7 +220,7 @@ The game instance also takes the following optional arguments:
 
 
 
-<a name="playing-a-turn"><span style="color:black">**Playing a turn**</span></a>
+#### <a name="playing-a-turn">Playing a turn</a>
 
 Playing a turn involves providing a guess to the `turn` method, or a `colour_sequence` if the `gametype` is set to `unknown`. This is for when you are playing an external game, you input the colours it returns.
 
@@ -248,7 +248,7 @@ See the `solve_unknown_word` example under `pywordle/examples`.
 
 
 
-<a name="the-wordle-class"><span style="color:black">**The Wordle class**</span></a>
+#### <a name="the-wordle-class">**The Wordle class**</a>
 
 Please see internal documentation at `pywordle/pywordle/pywordle.py` for information on the class attributes, properties, and methods operate.
 
@@ -256,11 +256,11 @@ Please see internal documentation at `pywordle/pywordle/pywordle.py` for informa
 
 
 
-<a name="included-examples"><span style="font-size: 1.5rem; color: black; font-weight: bold">Included examples</span></a>
+### <a name="included-examples">Included examples</a>
 
 
 
-<a name="cli-game"><span style="color:black">**CLI Game (Debugging interface) **</span></a>
+#### <a name="cli-game">CLI Game (Debugging interface)</a>
 
 location: `pywordle/examples/cli_game`
 
@@ -268,7 +268,7 @@ location: `pywordle/examples/cli_game`
 
 
 
-<a name="solve-unknown-word"><span style="color:black">**Unknown word solver**</span></a>
+#### <a name="solve-unknown-word">Unknown word solver</a>
 
 location: `pywordle/examples/solve_unknown_word`
 
@@ -278,7 +278,7 @@ This is used for solving games that are running externally.
 
 
 
-<a name="solve-unknown-word"><span style="color:black">**My solver (maximise_similarity)**</span></a>
+#### <a name="solve-unknown-word">My solver (maximise_similarity)</a>
 
 location: `pywordle/examples/maximise_similarity` 
 
