@@ -100,7 +100,7 @@ When running multiple games at a time you can submit each game instance to a `So
 
 ## <a name="creating-an-example-solver">Creating an example solver</a>
 
-This solver will select words at random from the remaining answers list provided by `Wordle.get_remaining_answers`. Interestingly, this yields a ~97% win rate without any further changes.
+This solver will select words at random from the remaining answers list provided by `Wordle.get_remaining_answers`. Interestingly, this yields a ~97% win rate without any further changes, so it's a really great starting point!
 
 Find the completed example under the `readme_example_solver` branch.
 
