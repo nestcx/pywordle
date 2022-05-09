@@ -82,7 +82,7 @@ In `pywordle/examples/solver_template` you can find the basic solver template `s
 <br>
 
 
-You can set up games that run under specific circumstances while it keeps track of keyboard data, game states, turn history, as well as data structures that maintain letter matches and letter frequencies and more. 
+You can set up games that run under specific circumstances while it keeps track of keyboard data, game states, turn history, and solve related data.
 
 <br>
 
@@ -268,7 +268,7 @@ Please see internal documentation at `pywordle/pywordle/pywordle.py` for informa
 
 ## <a name="creating-an-example-solver">Creating an example solver</a>
 
-This solver will select words at random from the answers list.
+This solver will select words at random from the remaining answers list provided by `Wordle.get_remaining_answers`. Interestingly, this yields a ~97% win rate without any further changes.
 
 
 
@@ -322,7 +322,7 @@ with alive_bar(game_count) as bar:
     for i in range(0, game_count):
 		
         # the gametype 'index' sets the answer to the nth answer in the answers list
-        game = Wordle(gametype='index', word_index=i)
+        game = Wordle(gametype='index', answer_index=i)
 
         while game.state == "active":
             # we need to integrate our solver here!
