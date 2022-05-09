@@ -31,9 +31,7 @@ PyWordle is a simple framework written in Python that helps you build your own W
 
 PyWordle let's you simulate and automate Wordle games to run against solving algorithms. It provides a simple template (`solver_template.py` found under `pywordle/examples/solver_template`) which lets you 'plug and play' solvers. 
 
-PyWordle offers several key sets of data to help create solvers, such as the `get_remaining_answers` property which eliminates answers from a designated `valid_answer_list` and returns a list of the possible remaining answers. 
-
-It also comes with a visual debugger, a solve tracker to track batches of games, a working solver with a 100% win rate as an example, and much more!
+It has handy functions such as the `Wordle.get_remaining_answers` property, and comes with a visual debugger, a solve tracker to track batches of games, a working solver with a 100% win rate, and much more!
 
 <br>
 
@@ -41,10 +39,19 @@ It also comes with a visual debugger, a solve tracker to track batches of games,
 
 Clone this project, create a new virtual environment at the root of the project, and install it as a Python package in 'editable' mode.
 
+Unix:
 ```bash
-~/pywordle$  clone https://github.com/nestcx/pywordle.git
+~/pywordle$ git clone https://github.com/nestcx/pywordle.git
 ~/pywordle$  venv .venv && . .venv/bin/activate
 (.venv) ~/pywordle$  pip install -e
+```
+
+Windows:
+```bash
+> git clone https://github.com/nestcx/pywordle.git
+> py -m venv .venv
+> .venv\Scripts\activate
+(.venv) >pip install -e .
 ```
 
 <br>
@@ -270,6 +277,8 @@ Please see internal documentation at `pywordle/pywordle/pywordle.py` for informa
 
 This solver will select words at random from the remaining answers list provided by `Wordle.get_remaining_answers`. Interestingly, this yields a ~97% win rate without any further changes.
 
+Find the completed example under the `readme_example_solver` branch.
+
 
 
 ### <a name="s1">1)  Create the folder/file structure</a>
@@ -302,6 +311,9 @@ They can then be imported in `run.py` and used when creating a game instance, fo
 from pywordle import MY_WORD_LIST
 game = Wordle(valid_guess_list = MY_WORD_LIST, valid_answer_list = VALID_ANSWER_LIST)
 ```
+
+This step is not necessary if you want to use the default wordlists, which are the official Wordle wordlists.
+
 
 <br>
 
@@ -355,7 +367,7 @@ with alive_bar(game_count) as bar:
 print(tracker.get_stats())
 ```
 
-
+This template has a `determine_best_guess()` method already defined in the module. Remove this method, and we will move this solving logic into a proper structure in the next step.
 
 <br>
 
@@ -378,7 +390,7 @@ def determine_best_guess(game):
 `determine_best_guess()` is our entry point into the algorithm, and should be set up to return the next guess for the game loop in `run.py` to use, as is set up already in the template.
 
 ```Python
-from pywordle.solvers.solver1 import solver.determine_best_guess
+from pywordle.solvers.solver1 import solver
 
 ...
 			while game.state == "active":
