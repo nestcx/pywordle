@@ -9,7 +9,9 @@ PyWordle is a simple framework written in Python that helps you build your own W
 - [Installation](#installation)
 - [How does it work?](#how-does-it-work)
 - [Creating an example solver](#creating-an-example-solver)
+  
   1 - [Create the file/folder structure](#s1)
+  
   2. [Import wordlists](#s2)
   3. [Copy the solver template to run.py](#s3)
   4. [Create the solving algorithm in solver.py](#s4)
