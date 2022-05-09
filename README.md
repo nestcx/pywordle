@@ -1,6 +1,6 @@
-# PyWordle
+# Pywordle
 
-PyWordle is a **simple** framework written in Python that helps you build your own Wordle solving algorithms!
+PyWordle is a simple framework written in Python that helps you build your own Wordle solving algorithms!
 
 <br>
 
@@ -31,7 +31,7 @@ PyWordle is a **simple** framework written in Python that helps you build your o
 
 PyWordle let's you simulate and automate Wordle games to run against solving algorithms. It provides a simple template (`solver_template.py` found under `pywordle/examples/solver_template`) which lets you 'plug and play' solvers. PyWordle offers several key sets of data to help create solvers, such as the `get_remaining_answers` property which eliminates answers from a designated `valid_answer_list` and returns a list of the possible remaining answers. 
 
-
+<br>
 
 ## <a name="installation">Installation</a>
 
@@ -43,9 +43,9 @@ Clone this project, create a new virtual environment at the root of the project,
 (.venv) ~/pywordle$  pip install -e
 ```
 
+<br>
 
-
-### <a name="how-does-it-work">How does it work?</a>
+## <a name="how-does-it-work">How does it work?</a>
 
 Under `pywordle/examples/solver_template` you can find the basic solver template called `solver_template.py` which runs a simple algorithm against an entire answer list.
 
@@ -104,33 +104,35 @@ print(tracker.get_stats())
 ![solver_running](https://i.imgur.com/aIivtH3.gif) 
 
 
-
+<br>
 
 
 You can set up games that run under specific circumstances while it keeps track of keyboard data, game states, turn history, as well as data structures that maintain letter matches and letter frequencies and more. 
 
+<br>
+
 When running multiple games at a time you can submit each game instance to a `SolveTracker` which will keep track of overall `wins`, `losses`, `loss_answers`, and `turn_history`, and can output a graph that displays the amount of games that were completed in x amount of turns.
 
+<br>
 
 
 
-
-### <a name="creating-an-example-solver">Creating an example solver</a>
+## <a name="creating-an-example-solver">Creating an example solver</a>
 
 This solver will select words at random from the answers list.
 
 
 
-#### <a name="s1">1)  Create the folder/file structure</a>
+### <a name="s1">1 -- Create the folder/file structure</a>
 
 ```
 pywordle/solver1/run.py
 pywordle/solver1/solver.py
 ```
 
+<br>
 
-
-#### <a name="s2">2)  Import wordlists</a>
+### <a name="s2">2)  Import wordlists</a>
 
 Wordlists are stored as text files in `pywordle/data`. Included are three wordlists, and you can add more.
 
@@ -147,15 +149,15 @@ from pywordle import MY_WORD_LIST
 game = Wordle(valid_guess_list = MY_WORD_LIST, valid_answer_list = VALID_ANSWER_LIST)
 ```
 
+<br>
 
-
-#### <a name="s3">3) Copy the solver template into run.py</a>
+### <a name="s3">3) Copy the solver template into run.py</a>
 
 The solver template can be found at `pywordle/examples/solver_template/solver_template.py`.
 
+<br>
 
-
-#### <a name="s4">4) Create the solving algorithm in solver.py</a>
+### <a name="s4">4) Create the solving algorithm in solver.py</a>
 
 ```Python
 def _alg(answers)
@@ -165,9 +167,9 @@ def determine_best_guess(game):
 	return _alg(game.get_remaining_answers)
 ```
 
+<br>
 
-
-#### <a name="s5">5) Import the solver into run.py</a>
+### <a name="s5">5) Import the solver into run.py</a>
 
 `determine_best_guess()` is our entry point into the algorithm, and should be set up to return the next guess for the game loop in `run.py` to use, as is set up already in the template.
 
@@ -175,21 +177,22 @@ def determine_best_guess(game):
 from pywordle.solver1.solver import determine_best_guess
 ```
 
+<br>
 
-
-#### <a name="s1">6) Run the solver!</a>
+### <a name="s1">6) Run the solver!</a>
 
 ```bash
 (.venv) ~/pywordle$ python solver1/run.py
 ```
 
+<br>
 
 
-### <a name="learning-the-framework">Learning the framework</a>
+## <a name="learning-the-framework">Learning the framework</a>
 
 
 
-#### <a name="create-an-instance-of-a-game">**Create an instance of a game**</a>
+### <a name="create-an-instance-of-a-game">**Create an instance of a game**</a>
 
 There are four different gametypes available based on where the `answer` comes from. The gametypes are:
 
@@ -218,9 +221,9 @@ The game instance also takes the following optional arguments:
 
 `gamestate`, default `None`
 
+<br>
 
-
-#### <a name="playing-a-turn">Playing a turn</a>
+### <a name="playing-a-turn">Playing a turn</a>
 
 Playing a turn involves providing a guess to the `turn` method, or a `colour_sequence` if the `gametype` is set to `unknown`. This is for when you are playing an external game, you input the colours it returns.
 
@@ -246,29 +249,28 @@ See the `solve_unknown_word` example under `pywordle/examples`.
 
 `Wordle.turn` will return a colour sequence indicating the games response from the turn, in the form of a list [0,1,2,2,0]
 
+<br>
 
-
-#### <a name="the-wordle-class">**The Wordle class**</a>
+### <a name="the-wordle-class">**The Wordle class**</a>
 
 Please see internal documentation at `pywordle/pywordle/pywordle.py` for information on the class attributes, properties, and methods operate.
 
 
+<br>
+
+## <a name="included-examples">Included examples</a>
 
 
 
-### <a name="included-examples">Included examples</a>
-
-
-
-#### <a name="cli-game">CLI Game (Debugging interface)</a>
+### <a name="cli-game">CLI Game (Debugging interface)</a>
 
 location: `pywordle/examples/cli_game`
 
 ![cli_game](https://i.imgur.com/cMMAKSX.gif) 
 
+<br>
 
-
-#### <a name="solve-unknown-word">Unknown word solver</a>
+### <a name="solve-unknown-word">Unknown word solver</a>
 
 location: `pywordle/examples/solve_unknown_word`
 
@@ -276,11 +278,16 @@ This is used for solving games that are running externally.
 
 ![unknown_word_solver](https://i.imgur.com/Kxmwomg.gif)
 
+<br>
 
-
-#### <a name="solve-unknown-word">My solver (maximise_similarity)</a>
+### <a name="solve-unknown-word">My solver (maximise_similarity)</a>
 
 location: `pywordle/examples/maximise_similarity` 
 
 This solver has a 100% success rate with an average of 3.65 guesses.
+
+
+<hr>
+
+Created by Marcus LV (2022)
 
