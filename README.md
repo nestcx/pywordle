@@ -9,10 +9,6 @@ PyWordle is a simple framework written in Python that helps you build your own W
 - [What is it?](#what-is-it)
 - [Installation](#installation)
 - [How does it work?](#how-does-it-work)
-- [Learning the framework](#learning-the-framework)
-  - [Create an instance of a game](#create-an-instance-of-a-game)
-  - [Playing a turn](#playing-a-turn)
-  - [The properties](#the-properties)
 - [Creating an example solver](#creating-an-example-solver)
   1. [Create the file/folder structure](#s1)
   2. [Import wordlists](#s2)
@@ -20,6 +16,10 @@ PyWordle is a simple framework written in Python that helps you build your own W
   4. [Create the solving algorithm in solver.py](#s4)
   5. [Import the solver into run.py](#s5)
   6. [Run the solver!](#s6)
+- [Learning the framework](#learning-the-framework)
+  - [Create an instance of a game](#create-an-instance-of-a-game)
+  - [Playing a turn](#playing-a-turn)
+  - [The properties](#the-properties)
 - [Included examples](#included-examples)
   - [CLI Game (visual debugger)](#cli-game)
   - [Unknown word solver](#unknown-word-solver)
@@ -97,6 +97,146 @@ When running multiple games at a time you can submit each game instance to a `So
 
 <br>
 
+
+## <a name="creating-an-example-solver">Creating an example solver</a>
+
+This solver will select words at random from the remaining answers list provided by `Wordle.get_remaining_answers`. Interestingly, this yields a ~97% win rate without any further changes.
+
+Find the completed example under the `readme_example_solver` branch.
+
+
+
+### <a name="s1">1)  Create the folder/file structure</a>
+
+```
+pywordle/
+    solvers/
+        __init__.py
++       solver1/
++	    __init__.py
++	    run.py
++	    solver.py
+```
+
+<br>
+
+### <a name="s2">2)  Import wordlists</a>
+
+Wordlists are stored as text files in `pywordle/data`. Three are included, and you can add more.
+
+The wordlists must be added to `pywordle/__init__.py` file in the following format:
+
+```Python
+MY_WORD_LIST = files(pywordle.data).joinpath('my_word_list.txt')
+```
+
+They can then be imported in `run.py` and used when creating a game instance, for example:
+
+```python
+from pywordle import MY_WORD_LIST
+game = Wordle(valid_guess_list = MY_WORD_LIST, valid_answer_list = VALID_ANSWER_LIST)
+```
+
+This step is not necessary if you want to use the default wordlists, which are the official Wordle wordlists.
+
+
+<br>
+
+### <a name="s3">3)  Copy the solver template into run.py</a>
+
+The solver template can be found at `pywordle/examples/solver_template/solver_template.py`.
+
+```python
+import random
+from alive_progress import alive_bar
+from pywordle.utils.clear_terminal import clear_terminal
+
+# import Wordle class
+from pywordle.pywordle.pywordle import Wordle
+
+# import SolveTracker class
+from pywordle.utils.solvetracker import SolveTracker
+
+
+
+# our wonderful algorithm
+def determine_best_guess(game):
+    return random.choice(game.get_remaining_answers)
+
+
+# determine how many times to loop
+game_count = len(Wordle().valid_answer_list)
+
+tracker = SolveTracker(turn_limit=6)
+
+with alive_bar(game_count) as bar:
+    for i in range(0, game_count):
+		
+        # the gametype 'index' sets the answer to the nth answer in the answers list
+        game = Wordle(gametype='index', answer_index=i)
+
+        while game.state == "active":
+            # the solver returns the it's best 'guess' to play.
+            guess = determine_best_guess(game)
+            game.turn(guess)
+
+            if game.state == "loss":
+                print(game.answer)
+
+        tracker.submit(game)
+        clear_terminal()
+        print(tracker.get_graph())
+        
+        bar()
+
+print(tracker.get_stats())
+```
+
+This template has a `determine_best_guess()` method already defined in the module. Remove this method, and we will move this solving logic into a proper structure in the next step.
+
+<br>
+
+### <a name="s4">4)  Create the solving algorithm in solver.py</a>
+
+```Python
+import random
+
+def _alg(answers):
+	return random.choice(answers)
+
+def determine_best_guess(game):
+	return _alg(game.get_remaining_answers)
+```
+
+<br>
+
+### <a name="s5">5)  Import and integrate the solver into run.py</a>
+
+`determine_best_guess()` is our entry point into the algorithm, and should be set up to return the next guess for the game loop in `run.py` to use, as is set up already in the template.
+
+```Python
+from pywordle.solvers.solver1 import solver
+
+...
+			while game.state == "active":
+        
+                # the solver returns it's best 'guess' to play.
+                guess = solver.determine_best_guess(game)
+                game.turn(guess)
+...
+```
+
+
+
+<br>
+
+### <a name="s6">6)  Run the solver!</a>
+
+```bash
+(.venv) ~/pywordle$ python solver1/run.py
+```
+
+<br>
 
 
 ## <a name="learning-the-framework">Learning the framework</a>
@@ -273,148 +413,6 @@ Please see internal documentation at `pywordle/pywordle/pywordle.py` for informa
 
 
 
-## <a name="creating-an-example-solver">Creating an example solver</a>
-
-This solver will select words at random from the remaining answers list provided by `Wordle.get_remaining_answers`. Interestingly, this yields a ~97% win rate without any further changes.
-
-Find the completed example under the `readme_example_solver` branch.
-
-
-
-### <a name="s1">1)  Create the folder/file structure</a>
-
-```
-pywordle/
-    solvers/
-        __init__.py
-+       solver1/
-+	    __init__.py
-+	    run.py
-+	    solver.py
-```
-
-<br>
-
-### <a name="s2">2)  Import wordlists</a>
-
-Wordlists are stored as text files in `pywordle/data`. Three are included, and you can add more.
-
-The wordlists must be added to `pywordle/__init__.py` file in the following format:
-
-```Python
-MY_WORD_LIST = files(pywordle.data).joinpath('my_word_list.txt')
-```
-
-They can then be imported in `run.py` and used when creating a game instance, for example:
-
-```python
-from pywordle import MY_WORD_LIST
-game = Wordle(valid_guess_list = MY_WORD_LIST, valid_answer_list = VALID_ANSWER_LIST)
-```
-
-This step is not necessary if you want to use the default wordlists, which are the official Wordle wordlists.
-
-
-<br>
-
-### <a name="s3">3)  Copy the solver template into run.py</a>
-
-The solver template can be found at `pywordle/examples/solver_template/solver_template.py`.
-
-```python
-import random
-from alive_progress import alive_bar
-from pywordle.utils.clear_terminal import clear_terminal
-
-# import Wordle class
-from pywordle.pywordle.pywordle import Wordle
-
-# import SolveTracker class
-from pywordle.utils.solvetracker import SolveTracker
-
-
-
-# our wonderful algorithm
-def determine_best_guess(game):
-    return random.choice(game.get_remaining_answers)
-
-
-# determine how many times to loop
-game_count = len(Wordle().valid_answer_list)
-
-tracker = SolveTracker(turn_limit=6)
-
-with alive_bar(game_count) as bar:
-    for i in range(0, game_count):
-		
-        # the gametype 'index' sets the answer to the nth answer in the answers list
-        game = Wordle(gametype='index', answer_index=i)
-
-        while game.state == "active":
-            # the solver returns the it's best 'guess' to play.
-            guess = determine_best_guess(game)
-            game.turn(guess)
-
-            if game.state == "loss":
-                print(game.answer)
-
-        tracker.submit(game)
-        clear_terminal()
-        print(tracker.get_graph())
-        
-        bar()
-
-print(tracker.get_stats())
-```
-
-This template has a `determine_best_guess()` method already defined in the module. Remove this method, and we will move this solving logic into a proper structure in the next step.
-
-<br>
-
-### <a name="s4">4)  Create the solving algorithm in solver.py</a>
-
-```Python
-import random
-
-def _alg(answers):
-	return random.choice(answers)
-
-def determine_best_guess(game):
-	return _alg(game.get_remaining_answers)
-```
-
-<br>
-
-### <a name="s5">5)  Import and integrate the solver into run.py</a>
-
-`determine_best_guess()` is our entry point into the algorithm, and should be set up to return the next guess for the game loop in `run.py` to use, as is set up already in the template.
-
-```Python
-from pywordle.solvers.solver1 import solver
-
-...
-			while game.state == "active":
-        
-                # the solver returns it's best 'guess' to play.
-                guess = solver.determine_best_guess(game)
-                game.turn(guess)
-...
-```
-
-
-
-<br>
-
-### <a name="s1">6)  Run the solver!</a>
-
-```bash
-(.venv) ~/pywordle$ python solver1/run.py
-```
-
-<br>
-
-
-
 ## <a name="included-examples">Included examples</a>
 
 
@@ -437,7 +435,7 @@ This is used for solving games that are running externally.
 
 <br>
 
-### <a name="solve-unknown-word">My solver (maximise_similarity)</a>
+### <a name="my-solver">My solver (maximise_similarity)</a>
 
 location: `pywordle/examples/maximise_similarity` 
 
