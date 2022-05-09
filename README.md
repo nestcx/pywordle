@@ -439,7 +439,7 @@ This is used for solving games that are running externally.
 
 location: `pywordle/examples/maximise_similarity` 
 
-This solver has a 100% success rate with an average of 3.65 guesses.
+This solver has a 100% success rate with an average of 3.65 guesses. It works by determining a valid answer with the highest letter frequency score based on answers that remain, and accounts for edge cases for situations like when multiple possible answers remain with only 1 or 2 letter variations by playing a word which eliminates as many of those remaining possible letters.
 
 <br>
 <br>
