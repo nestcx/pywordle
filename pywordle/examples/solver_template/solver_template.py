@@ -1,6 +1,6 @@
 import random
 from alive_progress import alive_bar
-from pywordle.utils import clear_terminal
+from pywordle.utils.clear_terminal import clear_terminal
 
 # import Wordle class
 from pywordle.pywordle.pywordle import Wordle
