@@ -42,7 +42,7 @@ Clone this project, create a new virtual environment at the root of the project,
 Unix:
 ```bash
 ~/pywordle$ git clone https://github.com/nestcx/pywordle.git
-~/pywordle$  venv .venv && . .venv/bin/activate
+~/pywordle$ python -m venv .venv && . .venv/bin/activate
 (.venv) ~/pywordle$  pip install -e
 ```
 
