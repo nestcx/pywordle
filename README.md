@@ -331,9 +331,9 @@ game.turn('hello')
 ```python
 [1,0,2,0,0]
 
+# 0 = BLACK
 # 1 = GREEN
 # 2 = YELLOW
-# 3 = BLACK
 ```
 
 This list would represent the turn below:
